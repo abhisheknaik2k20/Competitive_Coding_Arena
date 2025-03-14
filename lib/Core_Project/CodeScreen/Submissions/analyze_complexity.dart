@@ -1,11 +1,10 @@
+import 'package:competitivecodingarena/API_KEYS/api.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:convert';
 import 'dart:math' as math;
-
-const apiKey = "AIzaSyBbBZWg2FHEKC3u2wRwAFpAjZEkwtcXvWg";
 
 class AnalyzeComplexity extends StatefulWidget {
   final String? providedCode;
@@ -101,7 +100,7 @@ class _AnalyzeComplexityState extends State<AnalyzeComplexity> {
     try {
       final model = GenerativeModel(
         model: 'gemini-1.5-pro',
-        apiKey: apiKey,
+        apiKey: ApiKeys().geminiAPI,
       );
       final prompt = '''
 You are a code complexity analyzer. Analyze the following code and respond with ONLY a JSON object in the exact format shown below. Do not include any additional text, explanations, or formatting.

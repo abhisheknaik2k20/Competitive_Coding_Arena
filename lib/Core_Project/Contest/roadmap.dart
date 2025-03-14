@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:competitivecodingarena/API_KEYS/api.dart';
 import 'package:competitivecodingarena/AWS/Call_Logic/compiler_call.dart';
-import 'package:competitivecodingarena/Core_Project/CodeScreen/Submissions/analyze_complexity.dart';
 import 'package:competitivecodingarena/Snackbars&Pbars/snackbars.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class DSARoadmapScreen extends StatefulWidget {
   const DSARoadmapScreen({super.key});
 
   @override
-  _DSARoadmapScreenState createState() => _DSARoadmapScreenState();
+  State<DSARoadmapScreen> createState() => _DSARoadmapScreenState();
 }
 
 class _DSARoadmapScreenState extends State<DSARoadmapScreen>
@@ -182,90 +182,80 @@ class _DSARoadmapScreenState extends State<DSARoadmapScreen>
               : Stack(
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.85,
+                      height: MediaQuery.of(context).size.height,
                       child: Center(
-                        child: Card(
-                          elevation: 10,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(Icons.map_outlined,
-                                    size: 80, color: Colors.blue),
-                                const SizedBox(height: 20),
-                                const Text(
-                                  "Create Your Coding Road-Map",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "Embark on your coding journey with a personalized RoadMap",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600]),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 30),
-                                ElevatedButton(
-                                  onPressed: isPremium
-                                      ? () async {
-                                          showCircularbar(context);
-                                          try {
-                                            Map<String, dynamic> getdata =
-                                                await invokeLambdaFunction();
-                                            Map<String, dynamic> body =
-                                                jsonDecode(getdata['body']);
-                                            List<dynamic> programmingRoadmap =
-                                                body['programming_roadmap'];
-                                            List<Map<String, dynamic>>
-                                                roadmapWithProgress =
-                                                programmingRoadmap.map((step) {
-                                              return {
-                                                'title': step,
-                                                'progress': 0,
-                                              };
-                                            }).toList();
-                                            await FirebaseFirestore.instance
-                                                .collection('users')
-                                                .doc(FirebaseAuth
-                                                    .instance.currentUser!.uid)
-                                                .update({
-                                              "roadmap": roadmapWithProgress
-                                            });
-                                            Navigator.of(context).pop();
-                                            refreshData();
-                                          } catch (e) {
-                                            print(
-                                                "Error invoking Lambda function: $e");
-                                          }
-                                        }
-                                      : null,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        isPremium ? Colors.blue : Colors.grey,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 30, vertical: 15),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    isPremium
-                                        ? "Create Roadmap"
-                                        : "Premium Feature",
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.map_outlined,
+                                size: 80, color: Colors.blue),
+                            const SizedBox(height: 20),
+                            const Text(
+                              "Create Your Coding Road-Map",
+                              style: TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Embark on your coding journey with a personalized RoadMap",
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.grey[600]),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 30),
+                            ElevatedButton(
+                              onPressed: isPremium
+                                  ? () async {
+                                      showCircularbar(context);
+                                      try {
+                                        Map<String, dynamic> getdata =
+                                            await invokeLambdaFunction();
+                                        Map<String, dynamic> body =
+                                            jsonDecode(getdata['body']);
+                                        List<dynamic> programmingRoadmap =
+                                            body['programming_roadmap'];
+                                        List<Map<String, dynamic>>
+                                            roadmapWithProgress =
+                                            programmingRoadmap.map((step) {
+                                          return {
+                                            'title': step,
+                                            'progress': 0,
+                                          };
+                                        }).toList();
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .update({
+                                          "roadmap": roadmapWithProgress
+                                        });
+                                        Navigator.of(context).pop();
+                                        refreshData();
+                                      } catch (e) {
+                                        print(
+                                            "Error invoking Lambda function: $e");
+                                      }
+                                    }
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    isPremium ? Colors.blue : Colors.grey,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              child: Text(
+                                isPremium
+                                    ? "Create Roadmap"
+                                    : "Premium Feature",
+                                style: const TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -277,7 +267,10 @@ class _DSARoadmapScreenState extends State<DSARoadmapScreen>
                             child: Container(
                               padding: const EdgeInsets.all(30),
                               decoration: BoxDecoration(
-                                color: Colors.grey.shade900,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.grey[400]
+                                    : Colors.grey.shade900,
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Column(
@@ -470,7 +463,7 @@ class HierarchicalTreePainter extends CustomPainter {
 class GeminiService {
   static final model = GenerativeModel(
     model: 'gemini-pro',
-    apiKey: apiKey,
+    apiKey: ApiKeys().geminiAPI,
   );
 
   static Future<List<Map<String, dynamic>>> getProblemsForTopic(
@@ -489,20 +482,14 @@ For each problem, provide:
 Format the response as a JSON array with objects containing these fields:
 title, difficulty, description, exampleInput, exampleOutput, constraints
 ''';
-
       final content = [Content.text(prompt)];
       final response = await model.generateContent(content);
       final responseText = response.text;
-
-      // Parse the response text as JSON
       try {
-        // Since the response might include markdown or other formatting,
-        // we need to extract just the JSON part
         final jsonString = responseText?.substring(
           responseText.indexOf('['),
           responseText.lastIndexOf(']') + 1,
         );
-
         final List<dynamic> jsonList = json.decode(jsonString!);
         return jsonList.cast<Map<String, dynamic>>();
       } catch (e) {
@@ -523,7 +510,7 @@ class ProblemsScreen extends StatefulWidget {
   const ProblemsScreen({super.key, required this.topic});
 
   @override
-  _ProblemsScreenState createState() => _ProblemsScreenState();
+  State<ProblemsScreen> createState() => _ProblemsScreenState();
 }
 
 class _ProblemsScreenState extends State<ProblemsScreen> {
