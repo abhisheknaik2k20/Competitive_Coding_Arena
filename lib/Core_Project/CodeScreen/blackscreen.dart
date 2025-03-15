@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:competitivecodingarena/API_KEYS/api.dart';
 import 'package:competitivecodingarena/Core_Project/CodeScreen/Submissions/submission.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +9,6 @@ import 'package:competitivecodingarena/Core_Project/Problemset/examples/examplep
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:segmented_button_slide/segmented_button_slide.dart';
-
-const appId = "f8679213e89c4c75b50c926a3331f4c8";
-const token =
-    "007eJxTYPi6VauEnZFHkeXsx8SCvAcX5kxMcVY/921W7O7HrUe2H/inwJBmYWZuaWRonGphmWySbG6aZGqQbGlklmhsbGyYZpJsMdVEOr0hkJFBP/QXMyMDBIL4HAyJSRmZxRmp2QwMAAYRIX0=";
-const channel = "abhishek";
 
 class BlackScreen extends StatefulWidget {
   final String? teamid;
@@ -142,8 +138,8 @@ class _BlackScreenState extends State<BlackScreen> {
     try {
       await [Permission.microphone].request();
       _engine = createAgoraRtcEngine();
-      await _engine!.initialize(const RtcEngineContext(
-        appId: appId,
+      await _engine!.initialize(RtcEngineContext(
+        appId: ApiKeys().appId,
         channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
       ));
       _engine!.registerEventHandler(
@@ -196,8 +192,8 @@ class _BlackScreenState extends State<BlackScreen> {
           interval: 200, smooth: 3, reportVad: true);
 
       await _engine!.joinChannel(
-        token: token,
-        channelId: channel,
+        token: ApiKeys().token,
+        channelId: ApiKeys().channel,
         uid: 0,
         options: const ChannelMediaOptions(),
       );

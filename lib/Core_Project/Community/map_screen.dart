@@ -53,23 +53,26 @@ class _MapScreenState extends State<MapScreen>
 
   @override
   void dispose() {
+    _animationController.stop();
     _animationController.dispose();
     tileProvider.dispose();
     super.dispose();
   }
 
   Future<void> _loadCachedLocationAndGetCurrent() async {
-    setState(() {
-      _isLoadingLocation = true;
-    });
-    bool usedCache = await _loadCachedLocation();
-    if (!usedCache) {
-      await getCurrentLocation();
-    } else {
+    if (mounted) {
       setState(() {
-        _isLoadingLocation = false;
+        _isLoadingLocation = true;
       });
-      _updateLocationInBackground();
+      bool usedCache = await _loadCachedLocation();
+      if (!usedCache) {
+        await getCurrentLocation();
+      } else {
+        setState(() {
+          _isLoadingLocation = false;
+        });
+        _updateLocationInBackground();
+      }
     }
   }
 
@@ -87,11 +90,12 @@ class _MapScreenState extends State<MapScreen>
           final locationMap = json.decode(locationJson);
           final location =
               LatLng(locationMap['latitude'], locationMap['longitude']);
-          setState(() {
-            currentLocation = location;
-            currentAddress = addressData;
-          });
+
           if (mounted) {
+            setState(() {
+              currentLocation = location;
+              currentAddress = addressData;
+            });
             _animatedMove(location, _currentZoom);
           }
           return true;
@@ -123,6 +127,7 @@ class _MapScreenState extends State<MapScreen>
 
   Future<void> _updateLocationInBackground() async {
     try {
+      if (!mounted) return;
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -130,15 +135,18 @@ class _MapScreenState extends State<MapScreen>
           return;
         }
       }
-
+      if (!mounted) return;
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       if (!mounted) return;
       final newLocation = LatLng(position.latitude, position.longitude);
+      if (!mounted) return;
       await getAddressFromCoordinates(newLocation);
+      if (!mounted) return;
       setState(() {
         currentLocation = newLocation;
       });
+      if (!mounted) return;
       await _cacheLocationData();
     } catch (e) {
       debugPrint('Error updating location in background: $e');
@@ -146,12 +154,13 @@ class _MapScreenState extends State<MapScreen>
   }
 
   Future<void> getAddressFromCoordinates(LatLng position) async {
+    if (!mounted) return;
     try {
       Address address = await geoCode.reverseGeocoding(
         latitude: position.latitude,
         longitude: position.longitude,
       );
-
+      if (!mounted) return;
       setState(() {
         currentAddress = [
           address.streetAddress,
@@ -169,13 +178,15 @@ class _MapScreenState extends State<MapScreen>
   }
 
   Future<void> getCurrentLocation() async {
+    if (!mounted) return;
     setState(() {
       _isLoadingLocation = true;
     });
-
     LocationPermission permission = await Geolocator.checkPermission();
+    if (!mounted) return;
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
+      if (!mounted) return;
       if (permission == LocationPermission.denied) {
         setState(() {
           _isLoadingLocation = false;
@@ -183,26 +194,26 @@ class _MapScreenState extends State<MapScreen>
         return;
       }
     }
-
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       if (!mounted) return;
-
       final newLocation = LatLng(position.latitude, position.longitude);
       setState(() {
         currentLocation = newLocation;
       });
-
       await getAddressFromCoordinates(newLocation);
+      if (!mounted) return;
       _animatedMove(currentLocation!, _currentZoom);
+      if (!mounted) return;
       await _cacheLocationData();
-
+      if (!mounted) return;
       setState(() {
         _isLoadingLocation = false;
       });
     } catch (e) {
       debugPrint('Error getting location: $e');
+      if (!mounted) return;
       setState(() {
         _isLoadingLocation = false;
       });
@@ -210,29 +221,34 @@ class _MapScreenState extends State<MapScreen>
   }
 
   void _animatedMove(LatLng target, double zoom) {
+    if (!mounted) return;
     final startLatLng = mapController.camera.center;
     _latAnimation =
         Tween<double>(begin: startLatLng.latitude, end: target.latitude)
             .animate(CurvedAnimation(
                 parent: _animationController, curve: _animationCurve));
-
     _lngAnimation =
         Tween<double>(begin: startLatLng.longitude, end: target.longitude)
             .animate(CurvedAnimation(
                 parent: _animationController, curve: _animationCurve));
-
     _zoomAnimation = Tween<double>(begin: _currentZoom, end: zoom).animate(
         CurvedAnimation(parent: _animationController, curve: _animationCurve));
-
     Animation<double> animation =
         CurvedAnimation(parent: _animationController, curve: _animationCurve);
-    animation.addListener(() {
-      mapController.move(LatLng(_latAnimation!.value, _lngAnimation!.value),
-          _zoomAnimation!.value);
+    void listener() {
+      if (mounted) {
+        mapController.move(LatLng(_latAnimation!.value, _lngAnimation!.value),
+            _zoomAnimation!.value);
+      }
+    }
+
+    animation.addListener(listener);
+    _animationController.forward(from: 0).then((_) {
+      if (mounted) {
+        setState(() => _currentZoom = zoom);
+        animation.removeListener(listener);
+      }
     });
-    _animationController
-        .forward(from: 0)
-        .then((_) => setState(() => _currentZoom = zoom));
   }
 
   TileLayer get _tileLayer {
@@ -248,17 +264,21 @@ class _MapScreenState extends State<MapScreen>
         keepBuffer: 5);
   }
 
-  void _toggleRadiusControl() =>
-      setState(() => _showRadiusControl = !_showRadiusControl);
+  void _toggleRadiusControl() {
+    if (mounted) setState(() => _showRadiusControl = !_showRadiusControl);
+  }
 
-  void _toggleLayerSelector() =>
-      setState(() => _showLayerSelector = !_showLayerSelector);
+  void _toggleLayerSelector() {
+    if (mounted) setState(() => _showLayerSelector = !_showLayerSelector);
+  }
 
   void _changeMapLayer(String layerKey) {
-    setState(() {
-      _currentLayer = layerKey;
-      _showLayerSelector = false;
-    });
+    if (mounted) {
+      setState(() {
+        _currentLayer = layerKey;
+        _showLayerSelector = false;
+      });
+    }
   }
 
   Future<void> _forceRefreshLocation() async {
@@ -298,7 +318,9 @@ class _MapScreenState extends State<MapScreen>
                 minRadius: 0,
                 maxRadius: 1000,
                 radius: _radiusInMeters,
-                onChanged: (value) => setState(() => _radiusInMeters = value)),
+                onChanged: (value) {
+                  if (mounted) setState(() => _radiusInMeters = value);
+                }),
           ),
         // Enhanced map controls
         Positioned(

@@ -1,3 +1,4 @@
+import 'package:competitivecodingarena/API_KEYS/api.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_web/razorpay_web.dart';
 
@@ -92,13 +93,13 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
 
   void openCheckout() async {
     var options = {
-      'key': 'rzp_test_z2nMV0mDcEcGCQ',
+      'key': ApiKeys().razorpaykey,
       'amount': 100,
       'name': 'Competitive Coding Arena',
       'description': 'Payment for Product/Service',
       'prefill': {
-        'contact': '8830762624',
-        'email': 'abhisheknaik2k20@gmail.com'
+        'contact': ApiKeys().phone,
+        'email': ApiKeys().email,
       },
       'external': {
         'wallets': ['paytm', 'googlepay']

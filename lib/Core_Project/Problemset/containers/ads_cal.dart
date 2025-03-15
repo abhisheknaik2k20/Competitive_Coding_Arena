@@ -18,6 +18,7 @@ class _AdsAndCalenderAndProblemsState extends State<AdsAndCalenderAndProblems> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: 30),
         Row(
           children: [
             SizedBox(width: widget.size.width * 0.13),

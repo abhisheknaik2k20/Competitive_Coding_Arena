@@ -19,6 +19,9 @@ class _CommunityScreen extends State<CommunityScreen> {
       behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
       child: Column(
         children: [
+          SizedBox(
+            height: 30,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

@@ -41,6 +41,7 @@ class _ScreenBannerAndFeatured extends State<ScreenBannerAndFeatured>
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: 30),
         Container(
           width: widget.size.width,
           height: widget.size.height * 0.5,

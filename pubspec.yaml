@@ -52,6 +52,7 @@ dependencies:
   geocode: ^1.0.3
   shared_preferences: ^2.5.2
   cached_network_image: ^3.4.1
+  flutter_eval: ^0.7.6
   
 dev_dependencies:
   flutter_test:
@@ -83,6 +84,7 @@ flutter:
   - assets/images/sql50.png 
   - assets/images/top150.png 
   - assets/sounds/mp.mp3
+  - assets/images/stflow.png
   
 flutter_native_splash:
   color: "#000000"

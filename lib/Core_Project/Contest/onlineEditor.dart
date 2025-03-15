@@ -186,9 +186,10 @@ class _OnlineCodeEditorState extends State<OnlineCodeEditor> {
                                   ElevatedButton(
                                     onPressed: () async {
                                       final result = await callCompiler(
-                                          context,
-                                          selectedLanguage,
-                                          _codeController.text);
+                                        context,
+                                        selectedLanguage,
+                                        _codeController.text,
+                                      );
                                       await _updateConsoleOutput(
                                           result.toString());
                                       if (result

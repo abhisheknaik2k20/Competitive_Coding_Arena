@@ -1,4 +1,5 @@
 import 'package:competitivecodingarena/Core_Project/Community/community.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/stack_overflow_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:competitivecodingarena/Core_Project/Contest/banner.dart';
 import 'package:competitivecodingarena/Core_Project/Contest/roadmap.dart';
@@ -16,17 +17,12 @@ class LeetCodeProblemsetHomescreen extends StatefulWidget {
 
 class _LeetCodeProblemsetHomescreenState
     extends State<LeetCodeProblemsetHomescreen> {
-  String selectedItem = "Problems";
+  String selectedItem = "Stack-Overflow";
 
   List<Widget> buildHeader() {
     return [
       HomeAppBar(
         setItem: setItem,
-      ),
-      const SliverToBoxAdapter(
-        child: SizedBox(
-          height: 30,
-        ),
       ),
     ];
   }
@@ -75,7 +71,7 @@ class _LeetCodeProblemsetHomescreenState
           ],
         );
       },
-      child: _getCurrentScreen(),
+      child: Center(child: _getCurrentScreen()),
     );
   }
 
@@ -87,8 +83,10 @@ class _LeetCodeProblemsetHomescreenState
         return ScreenBannerAndFeatured(size: widget.size);
       case 'Road-Map':
         return const DSARoadmapScreen();
-      default:
+      case 'Community':
         return CommunityScreen();
+      default:
+        return StackOverflowHomePage();
     }
   }
 

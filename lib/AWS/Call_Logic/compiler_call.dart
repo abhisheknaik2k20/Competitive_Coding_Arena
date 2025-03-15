@@ -7,8 +7,11 @@ import 'package:http/http.dart' as http;
 import 'package:competitivecodingarena/Snackbars&Pbars/snackbars.dart';
 
 Future<Map<String, dynamic>> callCompiler(
-    BuildContext context, String language, String code) async {
-  showCircularbar(context);
+    BuildContext context, String language, String code,
+    {bool showProgress = true}) async {
+  if (showProgress) {
+    showCircularbar(context);
+  }
   try {
     final response = await http.post(
       Uri.parse(ApiKeys().compilerCall),
@@ -17,7 +20,9 @@ Future<Map<String, dynamic>> callCompiler(
       },
       body: jsonEncode(<String, String>{"language": language, "code": code}),
     );
-    Navigator.of(context).pop();
+    if (showProgress) {
+      Navigator.of(context).pop();
+    }
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {

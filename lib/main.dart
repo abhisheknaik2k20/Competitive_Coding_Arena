@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:html' as html;
 import 'package:competitivecodingarena/Error/error_widgets.dart';
+import 'package:competitivecodingarena/Messaging/messages_logic.dart';
 import 'package:competitivecodingarena/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -53,7 +54,6 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isDark', !isDark);
     }
-
     state = isDark ? _lightTheme : _darkTheme;
   }
 }
@@ -61,7 +61,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
-  // await requestNotificationPermissions();
+  await requestNotificationPermissions();
   runApp(
     ErrorHandler(
       child: const ProviderScope(
@@ -82,7 +82,6 @@ class MyApp extends ConsumerWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       home: _buildInitialScreen(context),
-      //Scaffold(body: SingleChildScrollView(child: CommunityScreen()))
     );
   }
 
