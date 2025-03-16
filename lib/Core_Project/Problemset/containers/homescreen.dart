@@ -17,7 +17,7 @@ class LeetCodeProblemsetHomescreen extends StatefulWidget {
 
 class _LeetCodeProblemsetHomescreenState
     extends State<LeetCodeProblemsetHomescreen> {
-  String selectedItem = "Stack-Overflow";
+  String selectedItem = "Problems";
 
   List<Widget> buildHeader() {
     return [

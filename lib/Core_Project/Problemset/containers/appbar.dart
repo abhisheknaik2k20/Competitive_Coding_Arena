@@ -48,7 +48,6 @@ class _HomeAppBar extends State<HomeAppBar> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkPremiumStatus();
   }
@@ -214,7 +213,7 @@ class _HomeAppBar extends State<HomeAppBar> {
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               children: [
-                for (Map<String, String> image in Images)
+                for (Map<String, String> image in images)
                   _buildGridItem(image['imageurl']!, image['name']!)
               ],
             ),
