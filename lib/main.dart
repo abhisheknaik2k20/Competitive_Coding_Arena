@@ -36,32 +36,32 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 
   Future<void> _loadTheme() async {
     if (kIsWeb) {
-      final isDark = html.window.localStorage['isDark'] == 'true';
-      state = isDark ? _darkTheme : _lightTheme;
+      final isLight = html.window.localStorage['isLight'] == 'true';
+      state = isLight ? _lightTheme : _darkTheme;
     } else {
       final prefs = await SharedPreferences.getInstance();
-      final isDark = prefs.getBool('isDark') ?? true;
-      state = isDark ? _darkTheme : _lightTheme;
+      final isLight = prefs.getBool('isLight') ?? true;
+      state = isLight ? _lightTheme : _darkTheme;
     }
   }
 
   Future<void> toggleTheme() async {
-    final isDark = state.brightness == Brightness.dark;
+    final isLight = state.brightness == Brightness.light;
 
     if (kIsWeb) {
-      html.window.localStorage['isDark'] = (!isDark).toString();
+      html.window.localStorage['isLight'] = (!isLight).toString();
     } else {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isDark', !isDark);
+      await prefs.setBool('isLight', !isLight);
     }
-    state = isDark ? _lightTheme : _darkTheme;
+    state = isLight ? _darkTheme : _lightTheme;
   }
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
-  await requestNotificationPermissions();
+  //await requestNotificationPermissions();
   runApp(
     ErrorHandler(
       child: const ProviderScope(

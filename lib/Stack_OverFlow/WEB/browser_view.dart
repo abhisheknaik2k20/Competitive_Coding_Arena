@@ -16,6 +16,7 @@ class _BrowserDialogState extends State<BrowserDialog>
   double _loadingProgress = 0.0;
   String _loadingStatus = "Initializing React components...";
   late AnimationController _rotationController;
+  // ignore: unused_field
   late Animation<double> _progressAnimation;
   Timer? _progressTimer;
 

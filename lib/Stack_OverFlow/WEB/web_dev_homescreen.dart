@@ -2,7 +2,6 @@ import 'package:competitivecodingarena/Stack_OverFlow/DSA/dsa_screen.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/DSA/live_submissions.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_description.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_title.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/WEB/htmlcss_code_snippets.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/WEB/react_code_snippets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
@@ -42,7 +41,7 @@ The goal is to implement an efficient state management strategy using React's Co
 
 Would you like me to add code snippets or suggest a specific approach based on your project’s needs? 
                         ''',
-                      code: reactcode_snippets[3],
+                      code: reactcode_snippets[0],
                       language: Syntax.JAVASCRIPT,
                     ),
                     Divider(),

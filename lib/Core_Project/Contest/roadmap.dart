@@ -462,7 +462,7 @@ class HierarchicalTreePainter extends CustomPainter {
 
 class GeminiService {
   static final model = GenerativeModel(
-    model: 'gemini-pro',
+    model: 'gemini-1.5-pro',
     apiKey: ApiKeys().geminiAPI,
   );
 
