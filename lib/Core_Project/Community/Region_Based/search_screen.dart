@@ -1,10 +1,11 @@
+import 'package:competitivecodingarena/Core_Project/Community/Region_Based/data.dart';
 import 'package:flutter/material.dart';
 
 // Data models
 class Institution {
   final String id;
   final String name;
-  final String type; // university, company, organization, etc.
+  final String type;
   final String description;
   final List<String> tags;
 
@@ -56,75 +57,9 @@ class _SearchScreenState extends State<SearchScreen>
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    _initializeData();
+    final (_allInstitutions, _regions) = initializeData();
     _filteredRegions = _regions;
     _filteredInstitutions = _allInstitutions;
-  }
-
-  void _initializeData() {
-    final List<Institution> institutions = [
-      Institution(
-        id: 'inst1',
-        name: 'Stanford University',
-        type: 'University',
-        description: 'Private research university in California',
-        tags: ['Research', 'Computer Science', 'Engineering'],
-      ),
-      Institution(
-        id: 'inst2',
-        name: 'Google',
-        type: 'Company',
-        description: 'Technology company specializing in search engines',
-        tags: ['Technology', 'Software', 'AI'],
-      ),
-      Institution(
-        id: 'inst3',
-        name: 'University of Tokyo',
-        type: 'University',
-        description: 'Leading research university in Japan',
-        tags: ['Research', 'Science', 'Engineering'],
-      ),
-      Institution(
-        id: 'inst4',
-        name: 'Oxford University',
-        type: 'University',
-        description: 'Collegiate research university in Oxford, England',
-        tags: ['Research', 'Humanities', 'Science'],
-      ),
-      Institution(
-        id: 'inst5',
-        name: 'Microsoft',
-        type: 'Company',
-        description: 'Technology corporation that develops software',
-        tags: ['Technology', 'Software', 'Cloud'],
-      ),
-    ];
-
-    _allInstitutions = institutions;
-
-    // Sample regions with institutions
-    _regions = [
-      Region(
-        id: 'reg1',
-        name: 'North America',
-        subregions: ['United States', 'Canada', 'Mexico'],
-        institutions: institutions
-            .where((i) => i.id == 'inst1' || i.id == 'inst2')
-            .toList(),
-      ),
-      Region(
-        id: 'reg2',
-        name: 'Europe',
-        subregions: ['United Kingdom', 'France', 'Germany', 'Italy'],
-        institutions: institutions.where((i) => i.id == 'inst4').toList(),
-      ),
-      Region(
-        id: 'reg3',
-        name: 'Asia',
-        subregions: ['Japan', 'China', 'South Korea', 'India'],
-        institutions: institutions.where((i) => i.id == 'inst3').toList(),
-      ),
-    ];
   }
 
   void _performSearch(String query) {
@@ -506,7 +441,6 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   void _viewInstitutionDetails(Institution institution) {
-    // Show institution details in a modal bottom sheet
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

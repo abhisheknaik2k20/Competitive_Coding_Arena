@@ -61,7 +61,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
-  //await requestNotificationPermissions();
+  await requestNotificationPermissions();
   runApp(
     ErrorHandler(
       child: const ProviderScope(
@@ -92,3 +92,8 @@ class MyApp extends ConsumerWidget {
         : LeetCodeProblemsetHomescreen(size: MediaQuery.sizeOf(context));
   }
 }
+
+
+// Scaffold(
+//             body: SingleChildScrollView(
+//                 child: CommunityScreen()))

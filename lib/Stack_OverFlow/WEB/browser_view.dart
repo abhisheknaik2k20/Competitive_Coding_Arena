@@ -427,7 +427,7 @@ class _BrowserDialogState extends State<BrowserDialog>
                                       ),
                                     ),
                                     SizedBox(height: 8),
-                                    Container(
+                                    SizedBox(
                                       width: 240,
                                       child: Text(
                                         _loadingStatus,

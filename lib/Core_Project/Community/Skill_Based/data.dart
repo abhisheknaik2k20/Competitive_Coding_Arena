@@ -408,7 +408,6 @@ final List<Map<String, dynamic>> skillClusteringData = [
   }
 ];
 
-// Additional detailed user profiles for potential popup/detail views
 final List<Map<String, dynamic>> detailedUserProfiles = [
   {
     'id': 'AE001',

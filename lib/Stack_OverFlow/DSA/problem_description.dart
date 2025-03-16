@@ -149,7 +149,7 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
       
       try {
         // The processed code
-        ${processedCode}
+        $processedCode
         
         // Function to find the component to render
         function findComponentToRender() {
