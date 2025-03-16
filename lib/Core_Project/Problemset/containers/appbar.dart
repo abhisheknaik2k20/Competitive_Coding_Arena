@@ -19,7 +19,7 @@ class HomeAppBar extends StatefulWidget {
 
 class _HomeAppBar extends State<HomeAppBar> {
   String selectedButton = "Problems";
-  List<Map<String, String>> Images = [
+  List<Map<String, String>> images = [
     {"imageurl": "assets/images/userpng.png", "name": "Profile"},
     {"imageurl": "assets/images/list.png", "name": "Lists"},
     {"imageurl": "assets/images/progress.png", "name": "Progress"},

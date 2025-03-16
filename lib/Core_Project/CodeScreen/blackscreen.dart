@@ -201,7 +201,7 @@ class _BlackScreenState extends State<BlackScreen> {
         _isAgoraInitialized = true;
       });
     } catch (e) {
-      // print("Error initializing Agora: $e");
+      print("Error initializing Agora: $e");
     }
   }
 
@@ -451,9 +451,7 @@ class _BlackScreenState extends State<BlackScreen> {
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(10),
-            onTap: () {
-              // Add functionality when tapping on a message
-            },
+            onTap: () {},
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Column(
