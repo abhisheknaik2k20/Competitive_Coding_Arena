@@ -1,4 +1,4 @@
-import 'package:competitivecodingarena/Core_Project/Community/search_screen.dart';
+import 'package:competitivecodingarena/Core_Project/Community/Region_Based/search_screen.dart';
 
 (List<Institution>, List<Region>) initializeData() {
   final List<Institution> institutions = [
@@ -162,10 +162,7 @@ import 'package:competitivecodingarena/Core_Project/Community/search_screen.dart
       name: 'Mumbai Region',
       subregions: ['Mumbai, Maharashtra', 'Pune, Maharashtra'],
       institutions: institutions
-          .where((i) =>
-              i.id == 'inst1' || // IIT Bombay
-              i.id == 'inst12' || // Reliance Industries
-              i.id == 'inst21')
+          .where((i) => i.id == 'inst1' || i.id == 'inst12' || i.id == 'inst21')
           .toList(),
     ),
     Region(
@@ -173,11 +170,7 @@ import 'package:competitivecodingarena/Core_Project/Community/search_screen.dart
       name: 'Bangalore Region',
       subregions: ['Bangalore, Karnataka'],
       institutions: institutions
-          .where((i) =>
-                  i.id == 'inst3' || // IISc Bangalore
-                  i.id == 'inst5' || // Infosys
-                  i.id == 'inst7' // Wipro
-              )
+          .where((i) => i.id == 'inst3' || i.id == 'inst5' || i.id == 'inst7')
           .toList(),
     ),
     Region(
@@ -185,11 +178,7 @@ import 'package:competitivecodingarena/Core_Project/Community/search_screen.dart
       name: 'Delhi NCR Region',
       subregions: ['New Delhi', 'Gurgaon', 'Noida'],
       institutions: institutions
-          .where((i) =>
-                  i.id == 'inst4' || // AIIMS Delhi
-                  i.id == 'inst6' || // IIT Delhi
-                  i.id == 'inst9' // HCL Technologies (Noida)
-              )
+          .where((i) => i.id == 'inst4' || i.id == 'inst6' || i.id == 'inst9')
           .toList(),
     ),
     Region(
@@ -197,10 +186,7 @@ import 'package:competitivecodingarena/Core_Project/Community/search_screen.dart
       name: 'Chennai Region',
       subregions: ['Chennai, Tamil Nadu'],
       institutions: institutions
-          .where((i) =>
-                  i.id == 'inst8' || // NIT Trichy
-                  i.id == 'inst14' // VIT Vellore
-              )
+          .where((i) => i.id == 'inst8' || i.id == 'inst14')
           .toList(),
     ),
     Region(
@@ -208,58 +194,40 @@ import 'package:competitivecodingarena/Core_Project/Community/search_screen.dart
       name: 'Kolkata Region',
       subregions: ['Kolkata, West Bengal'],
       institutions: institutions
-          .where((i) =>
-                  i.id == 'inst10' || // Indian Statistical Institute
-                  i.id == 'inst16' // IIT Kharagpur
-              )
+          .where((i) => i.id == 'inst10' || i.id == 'inst16')
           .toList(),
     ),
     Region(
       id: 'reg6',
       name: 'Ahmedabad Region',
       subregions: ['Ahmedabad, Gujarat'],
-      institutions: institutions
-          .where((i) => i.id == 'inst13' // IIM Ahmedabad
-              )
-          .toList(),
+      institutions: institutions.where((i) => i.id == 'inst13').toList(),
     ),
     Region(
       id: 'reg7',
       name: 'Pilani Region',
       subregions: ['Pilani, Rajasthan'],
-      institutions: institutions
-          .where((i) => i.id == 'inst11' // BITS Pilani
-              )
-          .toList(),
+      institutions: institutions.where((i) => i.id == 'inst11').toList(),
     ),
     Region(
       id: 'reg8',
       name: 'Hyderabad Region',
       subregions: ['Hyderabad, Telangana'],
-      institutions: institutions
-          .where((i) => i.id == 'inst17' // ISRO
-              )
-          .toList(),
+      institutions: institutions.where((i) => i.id == 'inst17').toList(),
     ),
     Region(
       id: 'reg9',
       name: 'Pan India',
       subregions: ['Multiple Locations'],
       institutions: institutions
-          .where((i) =>
-                  i.id == 'inst2' || // TCS
-                  i.id == 'inst15' // Mahindra & Mahindra
-              )
+          .where((i) => i.id == 'inst2' || i.id == 'inst15')
           .toList(),
     ),
     Region(
       id: 'reg10',
       name: 'E-commerce Hubs',
       subregions: ['Bangalore', 'Hyderabad', 'Mumbai'],
-      institutions: institutions
-          .where((i) => i.id == 'inst19' // Amazon India
-              )
-          .toList(),
+      institutions: institutions.where((i) => i.id == 'inst19').toList(),
     ),
   ];
   return (institutions, regions);

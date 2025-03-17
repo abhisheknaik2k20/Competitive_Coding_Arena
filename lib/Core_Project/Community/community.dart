@@ -1,6 +1,6 @@
-import 'package:competitivecodingarena/Core_Project/Community/map_screen.dart';
-import 'package:competitivecodingarena/Core_Project/Community/search_screen.dart';
-import 'package:competitivecodingarena/Core_Project/Community/skill_cluster.dart';
+import 'package:competitivecodingarena/Core_Project/Community/Region_Based/map_screen.dart';
+import 'package:competitivecodingarena/Core_Project/Community/Region_Based/search_screen.dart';
+import 'package:competitivecodingarena/Core_Project/Community/Skill_Based/skill_cluster.dart';
 import 'package:flutter/material.dart';
 
 class CommunityScreen extends StatefulWidget {

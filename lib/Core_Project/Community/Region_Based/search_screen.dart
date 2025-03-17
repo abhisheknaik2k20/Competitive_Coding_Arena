@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:competitivecodingarena/Core_Project/Community/Region_Based/data.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
 // Data models
@@ -45,8 +48,8 @@ class _SearchScreenState extends State<SearchScreen>
     with SingleTickerProviderStateMixin {
   late TextEditingController _searchController;
   String _searchQuery = '';
-  List<Region> _regions = [];
-  List<Institution> _allInstitutions = [];
+  final List<Region> regions = [];
+  final List<Institution> allInstitutions = [];
   List<Region> _filteredRegions = [];
   List<Institution> _filteredInstitutions = [];
   FilterOptions _filterOptions = FilterOptions();
@@ -57,9 +60,9 @@ class _SearchScreenState extends State<SearchScreen>
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    final (_allInstitutions, _regions) = initializeData();
-    _filteredRegions = _regions;
-    _filteredInstitutions = _allInstitutions;
+    final (allInstitutions, regions) = initializeData();
+    _filteredRegions = regions;
+    _filteredInstitutions = allInstitutions;
   }
 
   void _performSearch(String query) {
@@ -71,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   void _applyFilters() {
     // Filter regions
-    _filteredRegions = _regions.where((region) {
+    _filteredRegions = regions.where((region) {
       // Filter by search query
       bool matchesQuery = _searchQuery.isEmpty ||
           region.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
@@ -95,7 +98,7 @@ class _SearchScreenState extends State<SearchScreen>
     }).toList();
 
     // Filter institutions
-    _filteredInstitutions = _allInstitutions.where((institution) {
+    _filteredInstitutions = allInstitutions.where((institution) {
       // Filter by search query
       bool matchesQuery = _searchQuery.isEmpty ||
           institution.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
@@ -441,6 +444,42 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   void _viewInstitutionDetails(Institution institution) {
+    final faker = Faker();
+    final random = Random();
+
+    final List<Map<String, dynamic>> users = List.generate(10, (index) {
+      return {
+        'id': 'ID${random.nextInt(9000) + 1000}', // Random 4-digit ID
+        'name': faker.person.name(),
+        'rating': random.nextInt(3000),
+        'problemsSolved': random.nextInt(500),
+        'profileImage': 'assets/avatars/$index.jpg',
+        'joinDate':
+            '${random.nextInt(5) + 2020}-0${random.nextInt(9) + 1}-1${random.nextInt(9)}',
+        'topSkills': [
+          'Greedy Algorithms',
+          'Sorting',
+          'Dynamic Programming',
+          'Graphs',
+          'Bit Manipulation'
+        ]..shuffle(),
+        'recentProblems': List.generate(
+            3,
+            (i) => {
+                  'name': faker.lorem.words(2).join(' '),
+                  'difficulty': ['Easy', 'Medium', 'Hard'][random.nextInt(3)],
+                  'date': '2025-03-${random.nextInt(30) + 1}',
+                }),
+        'skillDistribution': {
+          'Greedy Algorithms': random.nextInt(100),
+          'Divide & Conquer': random.nextInt(100),
+          'Sorting': random.nextInt(100),
+          'Searching': random.nextInt(100),
+          'Dynamic Programming': random.nextInt(100),
+        },
+      };
+    });
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -450,10 +489,11 @@ class _SearchScreenState extends State<SearchScreen>
       builder: (context) {
         return Container(
           padding: const EdgeInsets.all(16),
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.8,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /// **Header Section**
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -473,6 +513,8 @@ class _SearchScreenState extends State<SearchScreen>
                 ],
               ),
               const SizedBox(height: 8),
+
+              /// **Institution Type**
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -485,78 +527,125 @@ class _SearchScreenState extends State<SearchScreen>
                 ),
               ),
               const SizedBox(height: 16),
+
+              /// **Members Section**
               const Text(
-                'About',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                'Members',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Text(institution.description),
-              const SizedBox(height: 16),
-              const Text(
-                'Tags',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    final user = users[index];
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: AssetImage(user['profileImage']),
+                        ),
+                        title: Text(user['name']),
+                        subtitle: Text(
+                            'Rating: ${user['rating']}  |  Solved: ${user['problemsSolved']}'),
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(16)),
+                            ),
+                            builder: (context) {
+                              return Container(
+                                padding: const EdgeInsets.all(16),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          user['name'],
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.close),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        'ID: ${user['id']} | Joined: ${user['joinDate']}'),
+                                    const SizedBox(height: 12),
+
+                                    /// **Top Skills**
+                                    const Text('Top Skills',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                    Wrap(
+                                      spacing: 8,
+                                      children: user['topSkills']
+                                          .map<Widget>((skill) =>
+                                              Chip(label: Text(skill)))
+                                          .toList(),
+                                    ),
+
+                                    /// **Recent Problems**
+                                    const SizedBox(height: 12),
+                                    const Text('Recent Problems',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                    Column(
+                                      children: (user['recentProblems'] as List)
+                                          .map<Widget>(
+                                            (problem) => ListTile(
+                                              title: Text(problem['name']),
+                                              subtitle: Text(
+                                                  '${problem['difficulty']} | Solved on: ${problem['date']}'),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+
+                                    const Spacer(),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12),
+                                      ),
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Connecting with ${user['name']}...'),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text('Connect'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: institution.tags.map((tag) {
-                  return Chip(
-                    label: Text(tag),
-                    backgroundColor: Colors.grey.shade200,
-                  );
-                }).toList(),
-              ),
-              const Spacer(),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        setState(() {
-                          _currentViewMode = ViewMode.regions;
-                          for (final region in _regions) {
-                            if (region.institutions
-                                .any((inst) => inst.id == institution.id)) {
-                              _searchController.text = region.name;
-                              _performSearch(region.name);
-                              break;
-                            }
-                          }
-                        });
-                      },
-                      child: const Text('View Region'),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('Connecting with ${institution.name}...'),
-                          ),
-                        );
-                      },
-                      child: const Text('Connect'),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
