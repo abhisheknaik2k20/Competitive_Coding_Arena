@@ -1,4 +1,6 @@
+import 'package:competitivecodingarena/Stack_OverFlow/DSA/dsa_screen.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/WEB/web_dev_homescreen.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:flutter/material.dart';
 
 final List<Map<String, dynamic>> stats = [
@@ -38,15 +40,27 @@ class TabItem {
 }
 
 class BuildQuestionItem extends StatelessWidget {
+  final StackOverFlowProblemClass stflow_instance;
   final Color randomColor;
 
-  const BuildQuestionItem({required this.randomColor, super.key});
+  const BuildQuestionItem(
+      {required this.randomColor, required this.stflow_instance, super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => WebDevHomescreen())),
+      onTap: () {
+        if (stflow_instance.category == "WEB/DEV") {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  WebDevHomescreen(stflow_instance: stflow_instance)));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DSAScreen(
+                    stflow_instance: stflow_instance,
+                  )));
+        }
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         padding: const EdgeInsets.all(16),
@@ -80,7 +94,7 @@ class BuildQuestionItem extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'How to implement proper state management in Flutter?',
+                          stflow_instance.problem_title,
                           style: TextStyle(
                             fontSize: 16,
                             color: randomColor,
@@ -92,7 +106,7 @@ class BuildQuestionItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'I am trying to manage state in my Flutter application but am confused about the best approach. Should I use Provider, Riverpod, Bloc, or something else? What are the pros and cons of each approach?',
+                    stflow_instance.problem_description,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: Colors.grey.shade700, height: 1.5),

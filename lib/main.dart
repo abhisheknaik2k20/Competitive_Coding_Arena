@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:html' as html;
-import 'package:competitivecodingarena/Core_Project/Community/community.dart';
 import 'package:competitivecodingarena/Error/error_widgets.dart';
 import 'package:competitivecodingarena/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -78,13 +77,11 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
     return MaterialApp(
-        title: 'Competitive Coding Arena',
-        theme: theme,
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            body: SingleChildScrollView(
-                child: CommunityScreen())) //_buildInitialScreen(context),
-        );
+      title: 'Competitive Coding Arena',
+      theme: theme,
+      debugShowCheckedModeBanner: false,
+      home: _buildInitialScreen(context),
+    );
   }
 
   Widget _buildInitialScreen(BuildContext context) {

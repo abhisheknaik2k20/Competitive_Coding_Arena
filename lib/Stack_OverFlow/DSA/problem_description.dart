@@ -257,14 +257,26 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
         });
       }
     } else {
-      Map<String, dynamic> data =
-          await callCompiler(context, "cpp", code, showProgress: false);
+      Map<String, dynamic> data = await callCompiler(
+          context, getLanguage(syntax), code,
+          showProgress: false);
 
       setState(() {
         _isRunning = false;
         _consoleOutput = data.toString();
       });
       print(data);
+    }
+  }
+
+  String getLanguage(Syntax syntax) {
+    switch (syntax) {
+      case Syntax.CPP:
+        return 'cpp';
+      case Syntax.JAVA:
+        return 'java';
+      default:
+        return 'python';
     }
   }
 

@@ -2,12 +2,12 @@ import 'package:competitivecodingarena/Stack_OverFlow/DSA/dsa_screen.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/DSA/live_submissions.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_description.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_title.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/WEB/react_code_snippets.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_syntax_view/flutter_syntax_view.dart';
 
 class WebDevHomescreen extends StatelessWidget {
-  const WebDevHomescreen({super.key});
+  final StackOverFlowProblemClass stflow_instance;
+  const WebDevHomescreen({required this.stflow_instance, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +31,14 @@ class WebDevHomescreen extends StatelessWidget {
                     ProblemTitle(
                         height: height,
                         width: width,
-                        title: "This is a web-dev Problem to-FIX"),
+                        title: stflow_instance.problem_title),
                     Divider(),
                     ProblemDescription(
                       height: height,
                       width: width,
-                      description: '''
-The goal is to implement an efficient state management strategy using React's Context API, Redux, or an alternative solution like Zustand, Jotai, or Recoil. The solution should minimize unnecessary re-renders, provide a clear separation of concerns, and ensure a seamless data flow across components.
-
-Would you like me to add code snippets or suggest a specific approach based on your project’s needs? 
-                        ''',
-                      code: reactcode_snippets[0],
-                      language: Syntax.JAVASCRIPT,
+                      description: stflow_instance.problem_description,
+                      code: stflow_instance.code,
+                      language: stflow_instance.syntax,
                     ),
                     Divider(),
                   ],

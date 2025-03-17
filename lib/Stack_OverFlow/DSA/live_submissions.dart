@@ -36,16 +36,17 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
 
   Future<void> _fetchSubmissions() async {
     await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      _submissions = [
-        Submission(
-          username: "coding_master",
-          language: "C++",
-          submittedAt: DateTime.now().subtract(Duration(minutes: 5)),
-          status: "Accepted",
-          executionTimeMs: 45,
-          memoryUsageKb: 8124,
-          code: '''
+    if (mounted) {
+      setState(() {
+        _submissions = [
+          Submission(
+            username: "coding_master",
+            language: "C++",
+            submittedAt: DateTime.now().subtract(Duration(minutes: 5)),
+            status: "Accepted",
+            executionTimeMs: 45,
+            memoryUsageKb: 8124,
+            code: '''
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -88,55 +89,56 @@ int main() {
 }
 
 ''',
-        ),
-        Submission(
-          username: "flutter_dev",
-          language: "Python",
-          submittedAt: DateTime.now().subtract(Duration(minutes: 8)),
-          status: "Wrong Answer",
-          executionTimeMs: 67,
-          memoryUsageKb: 10240,
-          code: "# Python solution code",
-        ),
-        Submission(
-          username: "algorithm_guru",
-          language: "Java",
-          submittedAt: DateTime.now().subtract(Duration(minutes: 15)),
-          status: "Time Limit Exceeded",
-          executionTimeMs: 2500,
-          memoryUsageKb: 15360,
-          code: "// Java solution code",
-        ),
-        Submission(
-          username: "new_coder123",
-          language: "C++",
-          submittedAt: DateTime.now().subtract(Duration(minutes: 20)),
-          status: "Compilation Error",
-          executionTimeMs: 0,
-          memoryUsageKb: 0,
-          code: "// C++ solution with syntax error",
-        ),
-        Submission(
-          username: "js_ninja",
-          language: "JavaScript",
-          submittedAt: DateTime.now().subtract(Duration(minutes: 25)),
-          status: "Runtime Error",
-          executionTimeMs: 124,
-          memoryUsageKb: 12288,
-          code: "// JavaScript solution code",
-        ),
-        Submission(
-          username: "competitive_coder",
-          language: "C++",
-          submittedAt: DateTime.now().subtract(Duration(hours: 1)),
-          status: "Accepted",
-          executionTimeMs: 32,
-          memoryUsageKb: 7168,
-          code: "// C++ optimized solution",
-        ),
-      ];
-      _isLoading = false;
-    });
+          ),
+          Submission(
+            username: "flutter_dev",
+            language: "Python",
+            submittedAt: DateTime.now().subtract(Duration(minutes: 8)),
+            status: "Wrong Answer",
+            executionTimeMs: 67,
+            memoryUsageKb: 10240,
+            code: "# Python solution code",
+          ),
+          Submission(
+            username: "algorithm_guru",
+            language: "Java",
+            submittedAt: DateTime.now().subtract(Duration(minutes: 15)),
+            status: "Time Limit Exceeded",
+            executionTimeMs: 2500,
+            memoryUsageKb: 15360,
+            code: "// Java solution code",
+          ),
+          Submission(
+            username: "new_coder123",
+            language: "C++",
+            submittedAt: DateTime.now().subtract(Duration(minutes: 20)),
+            status: "Compilation Error",
+            executionTimeMs: 0,
+            memoryUsageKb: 0,
+            code: "// C++ solution with syntax error",
+          ),
+          Submission(
+            username: "js_ninja",
+            language: "JavaScript",
+            submittedAt: DateTime.now().subtract(Duration(minutes: 25)),
+            status: "Runtime Error",
+            executionTimeMs: 124,
+            memoryUsageKb: 12288,
+            code: "// JavaScript solution code",
+          ),
+          Submission(
+            username: "competitive_coder",
+            language: "C++",
+            submittedAt: DateTime.now().subtract(Duration(hours: 1)),
+            status: "Accepted",
+            executionTimeMs: 32,
+            memoryUsageKb: 7168,
+            code: "// C++ optimized solution",
+          ),
+        ];
+        _isLoading = false;
+      });
+    }
   }
 
   void _viewSubmissionCode(Submission submission) {
@@ -271,9 +273,11 @@ int main() {
                             ))
                         .toList(),
                     onChanged: (value) {
-                      setState(() {
-                        _filterStatus = value!;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          _filterStatus = value!;
+                        });
+                      }
                     },
                   ),
                 ),

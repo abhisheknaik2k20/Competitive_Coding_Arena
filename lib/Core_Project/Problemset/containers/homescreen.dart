@@ -1,4 +1,5 @@
 import 'package:competitivecodingarena/Core_Project/Community/community.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/stack_overflow_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:competitivecodingarena/Core_Project/Contest/banner.dart';
@@ -86,7 +87,7 @@ class _LeetCodeProblemsetHomescreenState
       case 'Community':
         return CommunityScreen();
       default:
-        return StackOverflowHomePage();
+        return StackOverflowHomePage(stflow_problems: stflow_problems);
     }
   }
 

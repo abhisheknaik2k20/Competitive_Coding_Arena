@@ -1,9 +1,11 @@
+import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/stack_screen_data.dart';
 import 'package:dev_icons/dev_icons.dart';
 import 'package:flutter/material.dart';
 
 class StackOverflowHomePage extends StatefulWidget {
-  const StackOverflowHomePage({super.key});
+  final List<StackOverFlowProblemClass> stflow_problems;
+  const StackOverflowHomePage({required this.stflow_problems, super.key});
 
   @override
   State<StackOverflowHomePage> createState() => _StackOverflowHomePageState();
@@ -14,12 +16,8 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
   late TabController _tabController;
   final List<TabItem> _tabs = [
     TabItem(icon: DevIcons.cplusplusLine, label: 'DSA', color: Colors.indigo),
-    TabItem(icon: DevIcons.html5Plain, label: 'WEB-DEV', color: Colors.blue),
-    TabItem(icon: DevIcons.flutterPlain, label: 'FLUTTER', color: Colors.cyan),
-    TabItem(
-        icon: DevIcons.reactOriginal,
-        label: 'REACT-NATIVE',
-        color: Colors.teal),
+    TabItem(icon: DevIcons.html5Plain, label: 'WEB/DEV', color: Colors.blue),
+    TabItem(icon: DevIcons.flutterPlain, label: 'MOBILE', color: Colors.cyan),
   ];
 
   @override
@@ -27,7 +25,7 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
     super.initState();
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) setState(() {});
+      if (_tabController.indexIsChanging && mounted) setState(() {});
     });
   }
 
@@ -50,17 +48,19 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
           _buildCategoryNavBar(),
           Expanded(
             child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
               controller: _tabController,
-              children: _tabs
-                  .map((tab) => ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (_, index) =>
-                            BuildQuestionItem(randomColor: tab.color),
-                      ))
-                  .toList(),
+              children: _tabs.map((tab) {
+                List<StackOverFlowProblemClass> tabProblems = stflow_problems;
+                return ListView.builder(
+                  itemCount: tabProblems.length,
+                  itemBuilder: (_, index) => BuildQuestionItem(
+                    stflow_instance: tabProblems[index],
+                    randomColor: tab.color,
+                  ),
+                );
+              }).toList(),
             ),
-          ),
+          )
         ],
       ),
     );
