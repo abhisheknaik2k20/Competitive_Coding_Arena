@@ -1,5 +1,4 @@
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/dsa_screen.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/WEB/web_dev_homescreen.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/dsa_screen.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:flutter/material.dart';
 
@@ -41,25 +40,14 @@ class TabItem {
 
 class BuildQuestionItem extends StatelessWidget {
   final StackOverFlowProblemClass stflow_instance;
-  final Color randomColor;
-
-  const BuildQuestionItem(
-      {required this.randomColor, required this.stflow_instance, super.key});
-
+  const BuildQuestionItem({required this.stflow_instance, super.key});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (stflow_instance.category == "WEB/DEV") {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  WebDevHomescreen(stflow_instance: stflow_instance)));
-        } else {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DSAScreen(
-                    stflow_instance: stflow_instance,
-                  )));
-        }
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                ProblemScreen(stflow_instance: stflow_instance)));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -88,7 +76,7 @@ class BuildQuestionItem extends StatelessWidget {
                         height: 12,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: randomColor,
+                          color: Colors.blue,
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -96,8 +84,7 @@ class BuildQuestionItem extends StatelessWidget {
                         child: Text(
                           stflow_instance.problem_title,
                           style: TextStyle(
-                            fontSize: 16,
-                            color: randomColor,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -109,7 +96,11 @@ class BuildQuestionItem extends StatelessWidget {
                     stflow_instance.problem_description,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.grey.shade700, height: 1.5),
+                    style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey.shade500
+                            : Colors.grey.shade800,
+                        height: 1.5),
                   ),
                   const SizedBox(height: 12),
                   Wrap(
@@ -133,15 +124,15 @@ class BuildQuestionItem extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 12,
-                              backgroundColor: randomColor,
+                              backgroundColor: Colors.blue,
                               child: const Icon(Icons.person,
-                                  size: 12, color: Colors.white),
+                                  size: 24, color: Colors.white),
                             ),
                             const SizedBox(width: 8),
                             Text(
                               'JohnDoe',
                               style: TextStyle(
-                                color: randomColor,
+                                color: Colors.blue,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

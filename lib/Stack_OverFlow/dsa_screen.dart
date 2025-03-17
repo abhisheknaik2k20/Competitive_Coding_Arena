@@ -6,15 +6,15 @@ import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_title.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:flutter/material.dart';
 
-class DSAScreen extends StatefulWidget {
+class ProblemScreen extends StatefulWidget {
   final StackOverFlowProblemClass stflow_instance;
-  const DSAScreen({required this.stflow_instance, super.key});
+  const ProblemScreen({required this.stflow_instance, super.key});
 
   @override
-  State<DSAScreen> createState() => _DSAScreenState();
+  State<ProblemScreen> createState() => _ProblemScreenState();
 }
 
-class _DSAScreenState extends State<DSAScreen> {
+class _ProblemScreenState extends State<ProblemScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -41,12 +41,14 @@ class _DSAScreenState extends State<DSAScreen> {
                   language: widget.stflow_instance.syntax,
                 ),
                 Divider(),
-                ProblemStatement(
-                  height: height,
-                  width: width,
-                  problem:
-                      problemexample[widget.stflow_instance.problem_id ?? 0],
-                ),
+                widget.stflow_instance.problem_id == null
+                    ? Container()
+                    : ProblemStatement(
+                        height: height,
+                        width: width,
+                        problem: problemexample[
+                            widget.stflow_instance.problem_id ?? 0],
+                      ),
                 Divider(),
               ],
             ),

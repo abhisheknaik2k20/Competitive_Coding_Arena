@@ -55,12 +55,12 @@ class StackOverFlowProblemClass {
   }
 }
 
-List<String> categories = ['WEB/DEV', 'DSA', 'MOBILE'];
+List<String> categories = ['DSA', 'WEB/DEV', 'MOBILE'];
 
 List<StackOverFlowProblemClass> stflow_problems = [
   StackOverFlowProblemClass(
       problem_id: 2,
-      category: categories[1],
+      category: categories[0],
       problem_title: "Program Throws Segmentation Fault",
       problem_description:
           '''I'm trying to implement a program that finds the length of the longest substring without repeating characters for multiple test cases. The logic for the function seems correct, but when I run the program, it crashes with a segmentation fault.
@@ -97,7 +97,7 @@ int main() {
       tags: ['C++', 'DSA']),
   StackOverFlowProblemClass(
       problem_id: 3,
-      category: categories[1],
+      category: categories[0],
       problem_title: "Find Median of Two Sorted Arrays",
       problem_description:
           '''I'm trying to solve the classic "Median of Two Sorted Arrays" problem. Given two sorted arrays nums1 and nums2 of size m and n respectively, I need to find the median of the two sorted arrays.
@@ -157,7 +157,7 @@ if __name__ == "__main__":
       tags: ['PYTHON', 'DSA', 'Binary Search', 'Arrays']),
   StackOverFlowProblemClass(
       problem_id: 5,
-      category: categories[1],
+      category: categories[0],
       problem_title: "ZigZag Conversion Implementation",
       problem_description:
           '''I'm trying to solve the ZigZag Conversion problem. The problem asks to convert a string into a zigzag pattern and then read it line by line.
@@ -230,7 +230,7 @@ int main() {
       tags: ['C++', 'String', 'Data Structures']),
   StackOverFlowProblemClass(
       problem_id: 8,
-      category: categories[1],
+      category: categories[0],
       problem_title: "Palindrome Number Solution Crashing",
       problem_description:
           '''I'm trying to solve the Palindrome Number problem from LeetCode. The problem asks to determine whether an integer is a palindrome (reads the same forward and backward).
@@ -296,7 +296,7 @@ int main() {
         'Segmentation Fault'
       ]),
   StackOverFlowProblemClass(
-    category: categories[0],
+    category: categories[1],
     problem_title: "Invisible Counter",
     problem_description: '''
 I'm trying to build a simple counter in React, but for some reason, the counter value isn't displaying on the screen. The buttons for increment and decrement seem to work, but I can't actually see the number update when I click them.
@@ -343,7 +343,7 @@ function Counter() {
     tags: ["REACT", "JAVASCRIPT", "HTML", "CSS"],
   ),
   StackOverFlowProblemClass(
-    category: categories[0],
+    category: categories[1],
     problem_title: "TODO-LIST Problem",
     code: '''
 function App() {
@@ -426,7 +426,7 @@ When I type something in the input field and press "Enter" or click the "Add" bu
     tags: ["REACT", "JAVASCRIPT", "HTML", "CSS"],
   ),
   StackOverFlowProblemClass(
-    category: categories[0],
+    category: categories[1],
     problem_title: "Tab Selection Problem",
     problem_description: '''
 I've Implemented this react code for basic switching between the tabs on a WEB-Page but for some reason the screen doesn't seem update when the tab button is pressed. I’ve checked my code, but I can’t figure out what’s wrong.

@@ -47,20 +47,21 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
           _buildHeaderSection(),
           _buildCategoryNavBar(),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: _tabs.map((tab) {
-                List<StackOverFlowProblemClass> tabProblems = stflow_problems;
-                return ListView.builder(
-                  itemCount: tabProblems.length,
-                  itemBuilder: (_, index) => BuildQuestionItem(
-                    stflow_instance: tabProblems[index],
-                    randomColor: tab.color,
-                  ),
-                );
-              }).toList(),
-            ),
-          )
+              child: TabBarView(
+            controller: _tabController,
+            children: categories.map((category) {
+              List<StackOverFlowProblemClass> tabProblems = stflow_problems
+                  .where((problem) => problem.category == category)
+                  .toList();
+
+              return ListView.builder(
+                itemCount: tabProblems.length,
+                itemBuilder: (_, index) => BuildQuestionItem(
+                  stflow_instance: tabProblems[index],
+                ),
+              );
+            }).toList(),
+          ))
         ],
       ),
     );
