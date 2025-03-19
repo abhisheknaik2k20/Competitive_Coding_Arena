@@ -287,6 +287,7 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   }
 
   void _upvote() {
+    //write Logic for updating firebase with submission being upvoted
     setState(() {
       if (_isDownvoted) {
         _isDownvoted = false;
@@ -299,12 +300,13 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   }
 
   void _downvote() {
+    //Again, the same for the downvote logic
     setState(() {
       if (_isUpvoted) {
         _isUpvoted = false;
-        _voteCount -= 2; // Undo upvote (-1) and add downvote (-1)
+        _voteCount -= 2;
       } else if (!_isDownvoted) {
-        _voteCount--; // Just add downvote
+        _voteCount--;
       }
       _isDownvoted = true;
     });

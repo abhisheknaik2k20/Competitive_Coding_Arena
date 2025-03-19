@@ -2,10 +2,10 @@ import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/stack_screen_data.dart';
 import 'package:dev_icons/dev_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StackOverflowHomePage extends StatefulWidget {
-  final List<StackOverFlowProblemClass> stflow_problems;
-  const StackOverflowHomePage({required this.stflow_problems, super.key});
+  const StackOverflowHomePage({super.key});
 
   @override
   State<StackOverflowHomePage> createState() => _StackOverflowHomePageState();
@@ -15,10 +15,15 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final List<TabItem> _tabs = [
-    TabItem(icon: DevIcons.cplusplusLine, label: 'DSA', color: Colors.indigo),
+    TabItem(icon: DevIcons.cplusplusLine, label: 'DSA', color: Colors.amber),
     TabItem(icon: DevIcons.html5Plain, label: 'WEB/DEV', color: Colors.blue),
-    TabItem(icon: DevIcons.flutterPlain, label: 'MOBILE', color: Colors.cyan),
+    TabItem(icon: DevIcons.flutterPlain, label: 'MOBILE', color: Colors.teal),
   ];
+  final CollectionReference _problemsCollection =
+      FirebaseFirestore.instance.collection('stack_overflow_problems');
+  List<StackOverFlowProblemClass> _allProblems = [];
+  bool _isLoading = true;
+  String _errorMessage = '';
 
   @override
   void initState() {
@@ -27,6 +32,36 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
     _tabController.addListener(() {
       if (_tabController.indexIsChanging && mounted) setState(() {});
     });
+    _fetchProblemsFromFirebase();
+  }
+
+  Future<void> _fetchProblemsFromFirebase() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = '';
+      });
+
+      QuerySnapshot querySnapshot = await _problemsCollection.get();
+      List<StackOverFlowProblemClass> problems = querySnapshot.docs.map((doc) {
+        return StackOverFlowProblemClass.fromMap(
+            doc.data() as Map<String, dynamic>);
+      }).toList();
+      if (mounted) {
+        setState(() {
+          _allProblems = problems;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Error fetching problems: $e';
+          _isLoading = false;
+        });
+      }
+      print('Error fetching problems: $e');
+    }
   }
 
   @override
@@ -47,21 +82,85 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
           _buildHeaderSection(),
           _buildCategoryNavBar(),
           Expanded(
-              child: TabBarView(
-            controller: _tabController,
-            children: categories.map((category) {
-              List<StackOverFlowProblemClass> tabProblems = stflow_problems
-                  .where((problem) => problem.category == category)
-                  .toList();
-              return ListView.builder(
-                itemCount: tabProblems.length,
-                itemBuilder: (_, index) => BuildQuestionItem(
-                  stflow_instance: tabProblems[index],
-                ),
-              );
-            }).toList(),
-          ))
+            child: _isLoading
+                ? _buildLoadingIndicator()
+                : _errorMessage.isNotEmpty
+                    ? _buildErrorMessage()
+                    : TabBarView(
+                        controller: _tabController,
+                        children: ['DSA', 'WEB/DEV', 'MOBILE'].map((category) {
+                          List<StackOverFlowProblemClass> tabProblems =
+                              _allProblems
+                                  .where(
+                                      (problem) => problem.category == category)
+                                  .toList();
+                          return tabProblems.isEmpty
+                              ? _buildEmptyState(category)
+                              : _buildProblemsList(tabProblems);
+                        }).toList(),
+                      ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 16),
+          Text('Loading questions...'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorMessage() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 48, color: Colors.red),
+          const SizedBox(height: 16),
+          Text(_errorMessage, textAlign: TextAlign.center),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: _fetchProblemsFromFirebase,
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(String category) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.question_answer_outlined,
+              size: 48, color: Colors.grey),
+          const SizedBox(height: 16),
+          Text('No questions found in $category category'),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+            label: const Text('Ask a question'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProblemsList(List<StackOverFlowProblemClass> problems) {
+    return ListView.builder(
+      itemCount: problems.length,
+      itemBuilder: (context, index) => BuildQuestionItem(
+        stflow_instance: problems[index],
       ),
     );
   }
@@ -209,9 +308,9 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
                   color: Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text(
-                  '23,456,789',
-                  style: TextStyle(
+                child: Text(
+                  _isLoading ? '...' : '${_allProblems.length}',
+                  style: const TextStyle(
                       color: Colors.blue, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -243,7 +342,9 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
                   const Icon(Icons.trending_up, color: Colors.green, size: 18),
                   const SizedBox(width: 4),
                   Text(
-                    '1,234 questions today',
+                    _isLoading
+                        ? 'Loading...'
+                        : '${_allProblems.length} questions',
                     style: TextStyle(
                       color: isDark ? Colors.grey[300] : Colors.grey[900],
                       fontWeight: FontWeight.bold,

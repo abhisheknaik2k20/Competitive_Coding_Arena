@@ -3,27 +3,6 @@ import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/problem_screen.dart';
 import 'package:flutter/material.dart';
 
-final List<Map<String, dynamic>> stats = [
-  {
-    "value": "2",
-    "label": "votes",
-    "bgColor": Colors.grey.shade200,
-    "textColor": Colors.grey.shade700
-  },
-  {
-    "value": "1",
-    "label": "answer",
-    "bgColor": Colors.green.shade50,
-    "textColor": Colors.green
-  },
-  {
-    "value": "18",
-    "label": "views",
-    "bgColor": Colors.blue.shade50,
-    "textColor": Colors.blue.shade700
-  },
-];
-
 class TabItem {
   final IconData icon;
   final String label;
@@ -132,28 +111,30 @@ class BuildQuestionItem extends StatelessWidget {
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: stats
-                      .map((stat) => _buildStatBox(stat['value'], stat['label'],
-                          stat['bgColor'], stat['textColor']))
-                      .toList(),
+                  children: [
+                    _buildStatBox(stflow_instance.views.toString(), "Views",
+                        Colors.white, Colors.blue),
+                    _buildStatBox(stflow_instance.votes.toString(), "Votes",
+                        Colors.white, Colors.blue),
+                    _buildStatBox(stflow_instance.answers.toString(), "Views",
+                        Colors.white, Colors.blue)
+                  ],
                 ),
                 const Spacer(),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(20)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CircleAvatar(
-                        radius: 12,
-                        backgroundColor: Colors.blue,
-                        child: const Icon(Icons.person,
-                            size: 16, color: Colors.white), // Smaller icon
-                      ),
+                          radius: 12,
+                          backgroundColor: Colors.blue,
+                          child: const Icon(Icons.person,
+                              size: 16, color: Colors.white)),
                       const SizedBox(width: 8),
                       Text(
                         stflow_instance.name,
@@ -187,19 +168,17 @@ class BuildQuestionItem extends StatelessWidget {
         width: 60,
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
         decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
+            color: bgColor,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: textColor, width: 2)),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Keep column compact
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(value,
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: textColor)),
-            const SizedBox(height: 2), // Reduced spacing
-            Text(label,
-                style:
-                    TextStyle(fontSize: 10, color: textColor)), // Smaller font
+            const SizedBox(height: 2),
+            Text(label, style: TextStyle(fontSize: 10, color: textColor)),
           ],
         ),
       ),

@@ -1,12 +1,17 @@
 import 'dart:async';
 import 'dart:html' as html;
 import 'package:competitivecodingarena/Error/error_widgets.dart';
-import 'package:competitivecodingarena/Messaging/messages_logic.dart';
 import 'package:competitivecodingarena/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show
+        ConsumerWidget,
+        ProviderScope,
+        StateNotifier,
+        StateNotifierProvider,
+        WidgetRef;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:competitivecodingarena/Core_Project/Problemset/containers/homescreen.dart';
 import 'package:competitivecodingarena/Welcome/welcome.dart';
@@ -61,7 +66,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
-  await requestNotificationPermissions();
+  //await requestNotificationPermissions();
   runApp(
     ErrorHandler(
       child: const ProviderScope(
