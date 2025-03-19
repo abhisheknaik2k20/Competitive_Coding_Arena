@@ -1,4 +1,4 @@
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/submission_class.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/submission_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';

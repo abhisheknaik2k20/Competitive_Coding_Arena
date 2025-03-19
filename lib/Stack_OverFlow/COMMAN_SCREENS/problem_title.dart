@@ -1,21 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProblemTitle extends StatelessWidget {
+  final String name;
   final double height;
   final double width;
   final String title;
-  const ProblemTitle(
-      {required this.height,
-      required this.width,
-      required this.title,
-      super.key});
+  final Timestamp timestamp;
+  final List<String> tags;
+
+  const ProblemTitle({
+    required this.name,
+    required this.height,
+    required this.width,
+    required this.title,
+    required this.timestamp,
+    required this.tags,
+    super.key,
+  });
+
+  String getRelativeTime(Timestamp timestamp) {
+    DateTime postDate = timestamp.toDate();
+    Duration diff = DateTime.now().difference(postDate);
+
+    if (diff.inMinutes < 60) {
+      return "${diff.inMinutes} min ago";
+    } else if (diff.inHours < 24) {
+      return "${diff.inHours} hour${diff.inHours > 1 ? 's' : ''} ago";
+    } else if (diff.inDays < 30) {
+      return "${diff.inDays} day${diff.inDays > 1 ? 's' : ''} ago";
+    } else if (diff.inDays < 365) {
+      return "${(diff.inDays / 30).floor()} month${(diff.inDays / 30).floor() > 1 ? 's' : ''} ago";
+    } else {
+      return "${(diff.inDays / 365).floor()} year${(diff.inDays / 365).floor() > 1 ? 's' : ''} ago";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    String askedTime = getRelativeTime(timestamp);
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(20),
       width: width * 0.6,
-      height: height * 0.2,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -35,7 +61,7 @@ class ProblemTitle extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Asked 1 month ago  •  Modified 1 month ago  •  Viewed 1k times",
+                "Asked $askedTime  •  Asked by $name",
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.grey[600],
@@ -45,25 +71,38 @@ class ProblemTitle extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Row(
-            children: [
-              Icon(Icons.verified, color: Colors.orange, size: 16),
-              SizedBox(width: 4),
-              Text(
-                "Part of ",
-                style: TextStyle(fontSize: 12, color: Colors.black54),
-              ),
-              Text(
-                "R Language",
-                style: TextStyle(fontSize: 12, color: Colors.blue),
-              ),
-              Text(
-                " Collective",
-                style: TextStyle(fontSize: 12, color: Colors.black54),
-              ),
-            ],
-          ),
+              children: tags
+                  .map((tag) => _buildTag(tag, _getColorFromTag(tag)))
+                  .toList()),
         ],
       ),
     );
+  }
+
+  Widget _buildTag(String label, Color color) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: color.withOpacity(0.5), width: 1),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: color,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _getColorFromTag(String tag) {
+    int hash = tag.hashCode;
+    return Colors.primaries[hash % Colors.primaries.length];
   }
 }

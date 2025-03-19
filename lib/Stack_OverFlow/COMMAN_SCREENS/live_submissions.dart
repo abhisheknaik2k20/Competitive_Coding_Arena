@@ -1,5 +1,5 @@
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/preview_submission.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/submission_class.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/preview_submission.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/submission_class.dart';
 import 'package:flutter/material.dart';
 
 class LiveSubmissions extends StatefulWidget {

@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
 
 class StackOverFlowProblemClass {
+  final String name;
+  final Timestamp time_stamp;
   final String category;
   final String problem_title;
   final String problem_description;
@@ -10,6 +14,8 @@ class StackOverFlowProblemClass {
   final List<String> tags;
 
   StackOverFlowProblemClass({
+    required this.name,
+    required this.time_stamp,
     required this.category,
     required this.problem_title,
     required this.problem_description,
@@ -21,6 +27,8 @@ class StackOverFlowProblemClass {
 
   Map<String, dynamic> toMap() {
     return {
+      'name': name,
+      'time': time_stamp,
       'category': category,
       'problem_title': problem_title,
       'problem_description': problem_description,
@@ -33,6 +41,8 @@ class StackOverFlowProblemClass {
 
   factory StackOverFlowProblemClass.fromMap(Map<String, dynamic> map) {
     return StackOverFlowProblemClass(
+      name: map['name'],
+      time_stamp: map['time'],
       category: map['category'],
       problem_title: map['problem_title'] ?? '',
       problem_description: map['problem_description'] ?? '',
@@ -59,6 +69,8 @@ List<String> categories = ['DSA', 'WEB/DEV', 'MOBILE'];
 
 List<StackOverFlowProblemClass> stflow_problems = [
   StackOverFlowProblemClass(
+      name: 'Abhishek Naik',
+      time_stamp: Timestamp.fromDate(DateTime(2025, 3, 18, 10, 30, 0)),
       problem_id: 2,
       category: categories[0],
       problem_title: "Program Throws Segmentation Fault",
@@ -96,6 +108,8 @@ int main() {
       syntax: Syntax.CPP,
       tags: ['C++', 'DSA']),
   StackOverFlowProblemClass(
+      name: Faker().person.name(),
+      time_stamp: Timestamp.fromDate(DateTime(2025, 2, 11, 11, 00, 0)),
       problem_id: 3,
       category: categories[0],
       problem_title: "Find Median of Two Sorted Arrays",
@@ -156,6 +170,8 @@ if __name__ == "__main__":
       syntax: Syntax.SWIFT,
       tags: ['PYTHON', 'DSA', 'Binary Search', 'Arrays']),
   StackOverFlowProblemClass(
+      name: Faker().person.name(),
+      time_stamp: Timestamp.fromDate(DateTime(2025, 3, 14, 23, 30, 0)),
       problem_id: 5,
       category: categories[0],
       problem_title: "ZigZag Conversion Implementation",
@@ -229,6 +245,8 @@ int main() {
       syntax: Syntax.CPP,
       tags: ['C++', 'String', 'Data Structures']),
   StackOverFlowProblemClass(
+      name: Faker().person.name(),
+      time_stamp: Timestamp.fromDate(DateTime(2025, 3, 1, 16, 56, 0)),
       problem_id: 8,
       category: categories[0],
       problem_title: "Palindrome Number Solution Crashing",
@@ -296,6 +314,8 @@ int main() {
         'Segmentation Fault'
       ]),
   StackOverFlowProblemClass(
+    name: Faker().person.name(),
+    time_stamp: Timestamp.fromDate(DateTime(2025, 1, 6, 17, 45, 0)),
     category: categories[1],
     problem_title: "Invisible Counter",
     problem_description: '''
@@ -343,6 +363,8 @@ function Counter() {
     tags: ["REACT", "JAVASCRIPT", "HTML", "CSS"],
   ),
   StackOverFlowProblemClass(
+    name: Faker().person.name(),
+    time_stamp: Timestamp.fromDate(DateTime(2025, 1, 14, 20, 10, 0)),
     category: categories[1],
     problem_title: "TODO-LIST Problem",
     code: '''
@@ -426,6 +448,8 @@ When I type something in the input field and press "Enter" or click the "Add" bu
     tags: ["REACT", "JAVASCRIPT", "HTML", "CSS"],
   ),
   StackOverFlowProblemClass(
+    name: Faker().person.name(),
+    time_stamp: Timestamp.fromDate(DateTime(2025, 3, 1, 00, 56, 0)),
     category: categories[1],
     problem_title: "Tab Selection Problem",
     problem_description: '''

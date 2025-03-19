@@ -29,6 +29,8 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   late String _currentCode;
   bool _isEditing = false;
   bool _isRunning = false;
+  bool _isUpvoted = false;
+  bool _isDownvoted = false;
   final TextEditingController _codeEditingController = TextEditingController();
   int _voteCount = 1;
 
@@ -87,11 +89,9 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
         String htmlContent;
 
         if (isReactCode) {
-          // For React code, we'll use a simpler approach without relying on import/export
-          // Strip out all import statements since we're providing globals
           String processedCode =
               code.replaceAll(RegExp(r'import\s+.*?;', dotAll: true), '');
-          // Strip out export statements
+
           processedCode =
               processedCode.replaceAll(RegExp(r'export\s+default\s+'), '');
           processedCode = processedCode.replaceAll(RegExp(r'export\s+'), '');
@@ -288,15 +288,25 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
 
   void _upvote() {
     setState(() {
-      _voteCount++;
+      if (_isDownvoted) {
+        _isDownvoted = false;
+        _voteCount += 2;
+      } else if (!_isUpvoted) {
+        _voteCount++;
+      }
+      _isUpvoted = true;
     });
   }
 
   void _downvote() {
     setState(() {
-      if (_voteCount > 0) {
-        _voteCount--;
+      if (_isUpvoted) {
+        _isUpvoted = false;
+        _voteCount -= 2; // Undo upvote (-1) and add downvote (-1)
+      } else if (!_isDownvoted) {
+        _voteCount--; // Just add downvote
       }
+      _isDownvoted = true;
     });
   }
 
@@ -304,7 +314,7 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.width * 0.6,
-      height: widget.height,
+      height: widget.height * 1.5,
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -323,40 +333,44 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
           Row(
             children: [
               Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  ElevatedButton(
+                  IconButton(
                     onPressed: _upvote,
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(8),
-                      backgroundColor: Colors.grey[300],
+                    icon: Icon(
+                      Icons.arrow_circle_up_sharp,
+                      size: 35,
+                      color: _isUpvoted ? Colors.blue : Colors.grey,
                     ),
-                    child: Icon(
-                      Icons.arrow_drop_up,
-                      size: 24,
-                      color: Colors.blue,
+                    constraints: BoxConstraints(minWidth: 30, minHeight: 30),
+                    padding: EdgeInsets.zero,
+                    splashRadius: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: Text(
+                      "$_voteCount",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: _isUpvoted
+                            ? Colors.blue
+                            : _isDownvoted
+                                ? Colors.red
+                                : Colors.black87,
+                      ),
                     ),
                   ),
-                  Text(
-                    "$_voteCount",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  ElevatedButton(
+                  IconButton(
                     onPressed: _downvote,
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(8),
-                      backgroundColor: Colors.grey[300],
+                    icon: Icon(
+                      Icons.arrow_circle_down_sharp,
+                      size: 35,
+                      color: _isDownvoted ? Colors.red : Colors.grey,
                     ),
-                    child: Icon(
-                      Icons.arrow_drop_down,
-                      size: 24,
-                      color: Colors.blue,
-                    ),
+                    constraints: BoxConstraints(minWidth: 30, minHeight: 30),
+                    padding: EdgeInsets.zero,
+                    splashRadius: 20,
                   ),
                 ],
               ),
@@ -368,11 +382,6 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
                 ),
               ),
             ],
-          ),
-          SizedBox(height: 10),
-          Text(
-            "Below is sample code which I suspect has something to do with segfault.",
-            style: TextStyle(fontSize: 16, color: Colors.black87),
           ),
           SizedBox(height: 10),
           Expanded(

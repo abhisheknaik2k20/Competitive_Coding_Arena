@@ -1,8 +1,8 @@
 import 'package:competitivecodingarena/Core_Project/Problemset/examples/exampleprobs.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/live_submissions.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_description.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_statement.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/DSA/problem_title.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/live_submissions.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/problem_description.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/problem_statement.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/problem_title.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:flutter/material.dart';
 
@@ -29,9 +29,13 @@ class _ProblemScreenState extends State<ProblemScreen> {
               children: [
                 Divider(),
                 ProblemTitle(
-                    height: height,
-                    width: width,
-                    title: widget.stflow_instance.problem_title),
+                  name: widget.stflow_instance.name,
+                  timestamp: widget.stflow_instance.time_stamp,
+                  height: height,
+                  width: width,
+                  title: widget.stflow_instance.problem_title,
+                  tags: widget.stflow_instance.tags,
+                ),
                 Divider(),
                 ProblemDescription(
                   height: height,
@@ -66,6 +70,19 @@ class InvisibleSpacer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(width: width * 0.08);
+    return Container(
+      alignment: Alignment.topLeft,
+      padding: EdgeInsets.all(20),
+      width: width * 0.08,
+      child: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            size: 45,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.blue,
+          )),
+    );
   }
 }

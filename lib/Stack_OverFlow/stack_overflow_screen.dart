@@ -53,7 +53,6 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
               List<StackOverFlowProblemClass> tabProblems = stflow_problems
                   .where((problem) => problem.category == category)
                   .toList();
-
               return ListView.builder(
                 itemCount: tabProblems.length,
                 itemBuilder: (_, index) => BuildQuestionItem(
