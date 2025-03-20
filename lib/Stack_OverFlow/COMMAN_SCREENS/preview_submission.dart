@@ -16,16 +16,10 @@ class DialogWindow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: PreviewSubmission(
-        width: width,
-        submission: submission,
-        image: image,
-      ),
-    );
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: PreviewSubmission(
+            width: width, submission: submission, image: image));
   }
 }
 
@@ -42,134 +36,97 @@ class PreviewSubmission extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(2),
-      ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+        title:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           CircleAvatar(radius: 30, child: ClipOval(child: image)),
           SizedBox(
             width: 5,
           ),
           Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
+            TextSpan(children: [
+              TextSpan(
                   text: "${submission.username}'s ",
                   style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Roboto',
-                  ),
-                ),
-                TextSpan(
+                      color: Colors.blue,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto')),
+              TextSpan(
                   text: "${submission.language} Submission",
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Roboto',
-                  ),
-                ),
-              ],
-            ),
+                      color: Colors.black,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto'))
+            ]),
             overflow: TextOverflow.ellipsis,
           ),
           Expanded(child: Container()),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.all(10),
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-            ),
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: submission.code));
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Code copied to clipboard!"),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-            child: Icon(
-              Icons.copy,
-              color: Colors.white,
-              size: 30,
-            ),
-          ),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(10),
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: submission.code));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Code copied to clipboard!"),
+                    duration: Duration(seconds: 2)));
+              },
+              child: Icon(Icons.copy, color: Colors.white, size: 30)),
           SizedBox(width: 8),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              padding: EdgeInsets.all(10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Icon(
-              Icons.close,
-              color: Colors.white,
-              size: 30,
-            ),
-          ),
-        ],
-      ),
-      content: SizedBox(
-        width: width * 0.5,
-        height: 500,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  getStatusBadge(submission.status),
-                  SizedBox(width: 8),
-                  Text(
-                    "${submission.executionTimeMs} ms, ${submission.memoryUsageKb / 1024} MB",
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: Color(0xFF6A737C),
-                      fontFamily: 'Arial',
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 12),
-              Container(
-                height: 460,
-                width: width * 0.49,
-                padding: EdgeInsets.all(12),
-                child: SyntaxView(
-                  code: submission.code,
-                  syntax: _getSyntax(submission.language),
-                  syntaxTheme: SyntaxTheme.monokaiSublime(),
-                  fontSize: 13,
-                  withZoom: true,
-                  withLinesCount: true,
-                  expanded: true,
-                ),
-              ),
-              SizedBox(height: 8),
-              Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: submission.tags
-                      .map((tag) => _buildTag(tag, _getColorFromTag(tag)))
-                      .toList()),
-            ],
-          ),
-        ),
-      ),
-    );
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(Icons.close, color: Colors.white, size: 30))
+        ]),
+        content: SizedBox(
+            width: width * 0.5,
+            height: 500,
+            child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  Row(children: [
+                    getStatusBadge(submission.status),
+                    SizedBox(width: 8),
+                    Text(
+                        "${submission.executionTimeMs} ms, ${submission.memoryUsageKb / 1024} MB",
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Color(0xFF6A737C),
+                            fontFamily: 'Arial'))
+                  ]),
+                  SizedBox(height: 8),
+                  Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: submission.tags
+                          .map((tag) => _buildTag(tag, _getColorFromTag(tag)))
+                          .toList()),
+                  SizedBox(height: 12),
+                  Container(
+                      height: 460,
+                      width: width * 0.49,
+                      padding: EdgeInsets.all(12),
+                      child: SyntaxView(
+                          code: submission.code,
+                          syntax: _getSyntax(submission.language),
+                          syntaxTheme: SyntaxTheme.monokaiSublime(),
+                          fontSize: 13,
+                          withZoom: true,
+                          withLinesCount: true,
+                          expanded: true))
+                ]))));
   }
 
   Color _getColorFromTag(String tag) {
@@ -179,35 +136,25 @@ class PreviewSubmission extends StatelessWidget {
 
   Widget _buildTag(String label, Color color) {
     return InkWell(
-      onTap: () {},
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: submission.status == label
-              ? color.withOpacity(0.1)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: color,
-            width: 1,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: color,
-                fontWeight: FontWeight.bold,
-                fontSize: 11,
-                fontFamily: 'Arial',
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+        onTap: () {},
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+                color: submission.status == label
+                    ? color.withOpacity(0.1)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: color, width: 1)),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Text(
+                label,
+                style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                    fontFamily: 'Arial'),
+              )
+            ])));
   }
 
   Syntax _getSyntax(String language) {
@@ -256,28 +203,20 @@ class PreviewSubmission extends StatelessWidget {
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: badgeColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(3),
-        border: Border.all(color: badgeColor),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+            color: badgeColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(3),
+            border: Border.all(color: badgeColor)),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(icon, size: 12, color: badgeColor),
           SizedBox(width: 4),
-          Text(
-            status,
-            style: TextStyle(
-              color: badgeColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 11,
-              fontFamily: 'Arial',
-            ),
-          ),
-        ],
-      ),
-    );
+          Text(status,
+              style: TextStyle(
+                  color: badgeColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11,
+                  fontFamily: 'Arial'))
+        ]));
   }
 }
