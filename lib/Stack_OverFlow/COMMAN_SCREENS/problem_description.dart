@@ -46,6 +46,7 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   @override
   void initState() {
     super.initState();
+    setVotesCount();
     _currentCode = widget.code;
     _codeEditingController.text = _currentCode;
   }
