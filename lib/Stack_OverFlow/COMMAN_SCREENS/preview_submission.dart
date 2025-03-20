@@ -3,11 +3,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
 
+class DialogWindow extends StatelessWidget {
+  final Image image;
+  final double width;
+  final Submission submission;
+  const DialogWindow(
+      {required this.image,
+      required this.width,
+      required this.submission,
+      super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: PreviewSubmission(
+        width: width,
+        submission: submission,
+        image: image,
+      ),
+    );
+  }
+}
+
 class PreviewSubmission extends StatelessWidget {
   final Submission submission;
   final double width;
+  final Image image;
   const PreviewSubmission(
-      {required this.width, required this.submission, super.key});
+      {required this.image,
+      required this.width,
+      required this.submission,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,18 +49,21 @@ class PreviewSubmission extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Text(
-              "${submission.username}'s ${submission.language} Submission",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Roboto',
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
+          CircleAvatar(radius: 30, child: ClipOval(child: image)),
+          SizedBox(
+            width: 5,
           ),
+          Text(
+            "${submission.username}'s ${submission.language} Submission",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Roboto',
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Expanded(child: Container()),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.all(10),
@@ -112,17 +145,11 @@ class PreviewSubmission extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  _buildTag("Accepted", Color(0xFF48A868), Icons.check_circle),
-                  _buildTag("Wrong Answer", Color(0xFFD1383D), Icons.close),
-                  _buildTag("Time Limit Exceeded", Color(0xFFFF9800),
-                      Icons.timer_off),
-                  _buildTag("Runtime Error", Color(0xFF9C27B0), Icons.error),
-                  _buildTag("Compilation Error", Colors.blue, Icons.code_off),
-                ],
-              ),
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: submission.tags
+                      .map((tag) => _buildTag(tag, _getColorFromTag(tag)))
+                      .toList()),
             ],
           ),
         ),
@@ -130,11 +157,14 @@ class PreviewSubmission extends StatelessWidget {
     );
   }
 
-  Widget _buildTag(String label, Color color, IconData icon) {
+  Color _getColorFromTag(String tag) {
+    int hash = tag.hashCode;
+    return Colors.primaries[hash % Colors.primaries.length];
+  }
+
+  Widget _buildTag(String label, Color color) {
     return InkWell(
-      onTap: () {
-        // Tag selection logic would go here
-      },
+      onTap: () {},
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
@@ -150,8 +180,6 @@ class PreviewSubmission extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 12, color: color),
-            SizedBox(width: 4),
             Text(
               label,
               style: TextStyle(
@@ -188,27 +216,27 @@ class PreviewSubmission extends StatelessWidget {
 
     switch (status) {
       case "Accepted":
-        badgeColor = Color(0xFF48A868); // Stack overflow green
+        badgeColor = Color(0xFF48A868);
         icon = Icons.check_circle;
         break;
       case "Wrong Answer":
-        badgeColor = Color(0xFFD1383D); // Stack overflow red
+        badgeColor = Color(0xFFD1383D);
         icon = Icons.close;
         break;
       case "Time Limit Exceeded":
-        badgeColor = Color(0xFFFF9800); // Orange
+        badgeColor = Color(0xFFFF9800);
         icon = Icons.timer_off;
         break;
       case "Runtime Error":
-        badgeColor = Color(0xFF9C27B0); // Purple
+        badgeColor = Color(0xFF9C27B0);
         icon = Icons.error;
         break;
       case "Compilation Error":
-        badgeColor = Colors.blue; // SO blue
+        badgeColor = Colors.blue;
         icon = Icons.code_off;
         break;
       default:
-        badgeColor = Color(0xFF6A737C); // SO dark gray
+        badgeColor = Color(0xFF6A737C);
         icon = Icons.question_mark;
     }
 

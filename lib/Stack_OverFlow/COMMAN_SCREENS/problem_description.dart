@@ -106,7 +106,6 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
           processedCode = processedCode.replaceAll(RegExp(r'export\s+'), '');
           htmlContent = returnHTMLContent(processedCode, true);
         } else {
-          // For non-React code
           bool isCompleteHtml = code.trim().startsWith('<!DOCTYPE') ||
               code.trim().startsWith('<html') ||
               (code.contains('<html') && code.contains('</html>'));
@@ -125,14 +124,12 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
             ..srcdoc = htmlContent;
           return iframeElement;
         });
-
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return BrowserDialog(viewType: viewType);
           },
         );
-
         setState(() {
           _isRunning = false;
           _consoleOutput = 'Code executed successfully in the iframe.';

@@ -78,7 +78,10 @@ class _ProblemScreenState extends State<ProblemScreen> {
               ],
             ),
           ),
-          LiveSubmissions(width: width)
+          LiveSubmissions(
+            width: width,
+            docref: "",
+          )
         ],
       ),
     );
