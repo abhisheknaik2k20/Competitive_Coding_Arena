@@ -1,11 +1,14 @@
 import 'package:competitivecodingarena/AWS/Call_Logic/compiler_call.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/WEB/browser_view.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/WEB/htmlcss_code_snippets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
 import 'dart:ui_web' as ui;
 import 'dart:html';
 
 class ProblemDescription extends StatefulWidget {
+  final int upvotes;
+  final int downvotes;
   final double height;
   final double width;
   final String description;
@@ -13,6 +16,8 @@ class ProblemDescription extends StatefulWidget {
   final Syntax language;
 
   const ProblemDescription({
+    required this.upvotes,
+    required this.downvotes,
     required this.description,
     required this.code,
     required this.height,
@@ -32,7 +37,7 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   bool _isUpvoted = false;
   bool _isDownvoted = false;
   final TextEditingController _codeEditingController = TextEditingController();
-  int _voteCount = 1;
+  late int _voteCount;
 
   bool _showConsole = false;
   String _consoleOutput = '';
@@ -43,6 +48,14 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
     super.initState();
     _currentCode = widget.code;
     _codeEditingController.text = _currentCode;
+  }
+
+  void setVotesCount() {
+    if (mounted) {
+      setState(() {
+        _voteCount = widget.upvotes - widget.downvotes;
+      });
+    }
   }
 
   @override
@@ -74,8 +87,6 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
       try {
         final String viewType =
             'iframe-view-${DateTime.now().millisecondsSinceEpoch}';
-
-        // Detect if code contains React-specific syntax
         bool isReactCode = code.contains('React') ||
             code.contains('react') ||
             code.contains('ReactDOM') ||
@@ -85,105 +96,14 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
             code.contains('useState') ||
             code.contains('useEffect') ||
             code.contains('import') && code.contains('from');
-
         String htmlContent;
-
         if (isReactCode) {
           String processedCode =
               code.replaceAll(RegExp(r'import\s+.*?;', dotAll: true), '');
-
           processedCode =
               processedCode.replaceAll(RegExp(r'export\s+default\s+'), '');
           processedCode = processedCode.replaceAll(RegExp(r'export\s+'), '');
-
-          htmlContent = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>React Code Runner</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.4/framer-motion.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-  <style>
-    body { margin: 0; font-family: Arial, sans-serif; }
-    #root { padding: 16px; }
-    .error { color: red; padding: 10px; border: 1px solid red; border-radius: 4px; margin-top: 10px; }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-  <div id="error-container" style="display: none;" class="error"></div>
-  
-  <script>
-    // Make these libraries available globally
-    window.useState = React.useState;
-    window.useEffect = React.useEffect;
-    window.useRef = React.useRef;
-    window.useContext = React.useContext;
-    window.useMemo = React.useMemo;
-    window.useCallback = React.useCallback;
-    window.useReducer = React.useReducer;
-    window.motion = window.framerMotion ? window.framerMotion.motion : {};
-    window.AnimatePresence = window.framerMotion ? window.framerMotion.AnimatePresence : {};
-    
-    // Error handler
-    window.onerror = function(message, source, lineno, colno, error) {
-      const errorContainer = document.getElementById('error-container');
-      errorContainer.style.display = 'block';
-      errorContainer.innerHTML = '<strong>Error:</strong> ' + message + ' (line ' + lineno + ')';
-      console.error(error);
-      return true;
-    };
-  </script>
-  
-  <script type="text/babel">
-    // Wrap in immediately invoked function to create scope
-    (function() {
-      // Use standard React hooks without imports
-      const { useState, useEffect, useRef, useContext, useMemo, useCallback, useReducer } = React;
-      const { motion, AnimatePresence } = window.framerMotion || {};
-      
-      try {
-        // The processed code
-        $processedCode
-        
-        // Function to find the component to render
-        function findComponentToRender() {
-          // Check common component names
-          if (typeof App !== 'undefined') return App;
-          if (typeof Counter !== 'undefined') return Counter;
-          if (typeof MyComponent !== 'undefined') return MyComponent;
-          
-          // Look for any capitalized function that might be a component
-          for (const key in this) {
-            if (typeof this[key] === 'function' && /^[A-Z]/.test(key) && 
-                !['React', 'ReactDOM'].includes(key)) {
-              return this[key];
-            }
-          }
-          
-          return () => React.createElement('div', {}, 'No component found to render');
-        }
-        
-        // Find and render the component
-        const ComponentToRender = findComponentToRender();
-        ReactDOM.render(React.createElement(ComponentToRender), document.getElementById('root'));
-        
-      } catch (error) {
-        const errorContainer = document.getElementById('error-container');
-        errorContainer.style.display = 'block';
-        errorContainer.innerHTML = '<strong>Error:</strong> ' + error.message;
-        console.error(error);
-      }
-    })();
-  </script>
-</body>
-</html>
-      ''';
+          htmlContent = returnHTMLContent(processedCode, true);
         } else {
           // For non-React code
           bool isCompleteHtml = code.trim().startsWith('<!DOCTYPE') ||
@@ -193,42 +113,9 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
           if (isCompleteHtml) {
             htmlContent = code;
           } else {
-            htmlContent = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code Runner</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-  <style>
-    body { margin: 0; font-family: Arial, sans-serif; padding: 16px; }
-    .error { color: red; padding: 10px; border: 1px solid red; border-radius: 4px; }
-  </style>
-  <script>
-    window.onerror = function(message, source, lineno, colno, error) {
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'error';
-      errorDiv.innerHTML = '<strong>Error:</strong> ' + message + ' (line ' + lineno + ')';
-      document.body.appendChild(errorDiv);
-      return true;
-    };
-  </script>
-</head>
-<body>
-  
-    $code
-    <script>
-      // Execute any JS code that might not be in script tags
-      
-    </script>
-  }
-</body>
-</html>
-      ''';
+            htmlContent = returnHTMLContent(code, false);
           }
         }
-
         ui.platformViewRegistry.registerViewFactory(viewType, (int viewId) {
           final IFrameElement iframeElement = IFrameElement()
             ..style.border = 'none'
@@ -287,7 +174,6 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   }
 
   void _upvote() {
-    //write Logic for updating firebase with submission being upvoted
     setState(() {
       if (_isDownvoted) {
         _isDownvoted = false;
@@ -300,7 +186,6 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
   }
 
   void _downvote() {
-    //Again, the same for the downvote logic
     setState(() {
       if (_isUpvoted) {
         _isUpvoted = false;

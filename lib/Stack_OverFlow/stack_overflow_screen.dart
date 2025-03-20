@@ -309,6 +309,7 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
+                  
                   _isLoading ? '...' : '${_allProblems.length}',
                   style: const TextStyle(
                       color: Colors.blue, fontWeight: FontWeight.bold),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:competitivecodingarena/Core_Project/Problemset/examples/exampleprobs.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/live_submissions.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/problem_description.dart';
@@ -15,6 +16,24 @@ class ProblemScreen extends StatefulWidget {
 }
 
 class _ProblemScreenState extends State<ProblemScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _updateViews();
+  }
+
+  Future<void> _updateViews() async {
+    await FirebaseFirestore.instance
+        .collection('stack_overflow_problems')
+        .doc(widget.stflow_instance.problem_title
+            .replaceAll(RegExp(r'[^\w\s]'), '')
+            .replaceAll(RegExp(r'\s+'), '_')
+            .toLowerCase())
+        .update({
+      'views': FieldValue.increment(1),
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -38,6 +57,8 @@ class _ProblemScreenState extends State<ProblemScreen> {
                 ),
                 Divider(),
                 ProblemDescription(
+                  upvotes: widget.stflow_instance.upvotes,
+                  downvotes: widget.stflow_instance.downvotes,
                   height: height,
                   width: width,
                   description: widget.stflow_instance.problem_description,

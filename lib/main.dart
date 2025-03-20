@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:html' as html;
 import 'package:competitivecodingarena/Error/error_widgets.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:competitivecodingarena/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -66,6 +67,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
+  await saveProblemsToFirestore();
   //await requestNotificationPermissions();
   runApp(
     ErrorHandler(

@@ -47,7 +47,7 @@ class BuildQuestionItem extends StatelessWidget {
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
-        onTap: () {
+        onTap: () async {
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
@@ -114,9 +114,13 @@ class BuildQuestionItem extends StatelessWidget {
                   children: [
                     _buildStatBox(stflow_instance.views.toString(), "Views",
                         Colors.white, Colors.blue),
-                    _buildStatBox(stflow_instance.votes.toString(), "Votes",
-                        Colors.white, Colors.blue),
-                    _buildStatBox(stflow_instance.answers.toString(), "Views",
+                    _buildStatBox(
+                        (stflow_instance.upvotes - stflow_instance.downvotes)
+                            .toString(),
+                        "Votes",
+                        Colors.white,
+                        Colors.blue),
+                    _buildStatBox(stflow_instance.answers.toString(), "Answers",
                         Colors.white, Colors.blue)
                   ],
                 ),
