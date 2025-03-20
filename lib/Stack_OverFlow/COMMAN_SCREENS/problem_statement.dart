@@ -16,56 +16,51 @@ class ProblemStatement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height * 0.6,
-      width: width * 0.6,
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 15,
-                offset: const Offset(0, 4))
-          ],
-          border: Border.all(color: Colors.grey.shade200)),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildStatsCard(),
-            const SizedBox(height: 3),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey[200]!)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...problem.content.map((item) => _buildContentText(item)),
-                ],
-              ),
+        height: height * 0.6,
+        width: width * 0.6,
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 15,
+                  offset: const Offset(0, 4))
+            ],
+            border: Border.all(color: Colors.grey.shade200)),
+        child: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          _buildStatsCard(),
+          const SizedBox(height: 3),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey[200]!)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...problem.content.map((item) => _buildContentText(item)),
+              ],
             ),
-            const SizedBox(height: 5),
-            Row(children: [
-              const Icon(Icons.science_outlined,
-                  size: 20, color: Colors.indigo),
-              const SizedBox(width: 8),
-              const Text('Test-Cases',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigo))
-            ]),
-            const SizedBox(height: 8),
-            ...problem.testcases.map((testcase) => _buildTestCase(testcase)),
-          ],
-        ),
-      ),
-    );
+          ),
+          const SizedBox(height: 5),
+          Row(children: [
+            const Icon(Icons.science_outlined, size: 20, color: Colors.indigo),
+            const SizedBox(width: 8),
+            const Text('Test-Cases',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.indigo))
+          ]),
+          const SizedBox(height: 8),
+          ...problem.testcases.map((testcase) => _buildTestCase(testcase))
+        ])));
   }
 
   Widget _buildStatsCard() {

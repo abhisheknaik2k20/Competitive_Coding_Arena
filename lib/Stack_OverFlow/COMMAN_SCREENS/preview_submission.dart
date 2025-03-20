@@ -97,14 +97,20 @@ class PreviewSubmission extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                   Row(children: [
-                    getStatusBadge(submission.status),
-                    SizedBox(width: 8),
                     Text(
-                        "${submission.executionTimeMs} ms, ${submission.memoryUsageKb / 1024} MB",
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: Color(0xFF6A737C),
-                            fontFamily: 'Arial'))
+                      "${submission.executionTimeMs} ms  •  ${(submission.memoryUsageKb / 1024).toStringAsFixed(2)} MB",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.italic,
+                        letterSpacing: 0.5,
+                        foreground: Paint()
+                          ..shader = LinearGradient(
+                            colors: [Color(0xFF6A737C), Color(0xFF4A90E2)],
+                          ).createShader(Rect.fromLTWH(0, 0, 200, 30)),
+                        fontFamily: 'Arial',
+                      ),
+                    ),
                   ]),
                   SizedBox(height: 8),
                   Wrap(
@@ -143,7 +149,6 @@ class PreviewSubmission extends StatelessWidget {
                 color: submission.status == label
                     ? color.withOpacity(0.1)
                     : Colors.transparent,
-                borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: color, width: 1)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               Text(
