@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/preview_submission.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/submission_class.dart';
 import 'package:flutter/material.dart';
@@ -227,7 +228,7 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
             ],
           ),
           Text(
-            _formatTimeAgo(submission.submittedAt),
+            getRelativeTime(submission.time_stamp),
             style: const TextStyle(
               color: Color(0xFF6A737C),
               fontSize: 11,
@@ -246,59 +247,53 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
       );
 
   Widget _buildResourceUsage(Submission submission) => Text(
-        "${submission.executionTimeMs} ms, ${submission.memoryUsageKb / 1024} MB",
-        style: const TextStyle(
+      "${submission.executionTimeMs} ms, ${submission.memoryUsageKb / 1024} MB",
+      style: const TextStyle(
           color: Color(0xFF6A737C),
           fontSize: 11,
           fontStyle: FontStyle.italic,
-          fontFamily: 'Arial',
-        ),
-      );
+          fontFamily: 'Arial'));
 
   Widget _buildTagsRow(Submission submission) => Wrap(
-        children: submission.tags.map((tag) => TagBadge(label: tag)).toList(),
-      );
+      children: submission.tags.map((tag) => TagBadge(label: tag)).toList());
 
   Widget _buildTagBadge(String label) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: _colors.tagBackground,
-          borderRadius: BorderRadius.circular(3),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: AppColors.tagText,
-            fontSize: 11,
-            fontFamily: 'Arial',
-          ),
-        ),
+            color: _colors.tagBackground,
+            borderRadius: BorderRadius.circular(3)),
+        child: Text(label,
+            style: TextStyle(
+                color: AppColors.tagText, fontSize: 11, fontFamily: 'Arial')),
       );
 
-  String _formatTimeAgo(DateTime dateTime) {
-    final Duration difference = DateTime.now().difference(dateTime);
+  String getRelativeTime(Timestamp timestamp) {
+    DateTime postDate = timestamp.toDate();
+    Duration diff = DateTime.now().difference(postDate);
 
-    if (difference.inSeconds < 60) return 'Just now';
-    if (difference.inMinutes < 60) return '${difference.inMinutes}m ago';
-    if (difference.inHours < 24) return '${difference.inHours}h ago';
-    return '${difference.inDays}d ago';
+    if (diff.inMinutes < 60) {
+      return "${diff.inMinutes} min ago";
+    } else if (diff.inHours < 24) {
+      return "${diff.inHours} hour${diff.inHours > 1 ? 's' : ''} ago";
+    } else if (diff.inDays < 30) {
+      return "${diff.inDays} day${diff.inDays > 1 ? 's' : ''} ago";
+    } else if (diff.inDays < 365) {
+      return "${(diff.inDays / 30).floor()} month${(diff.inDays / 30).floor() > 1 ? 's' : ''} ago";
+    } else {
+      return "${(diff.inDays / 365).floor()} year${(diff.inDays / 365).floor() > 1 ? 's' : ''} ago";
+    }
   }
 
   void _viewSubmissionCode(Submission submission, Image image) {
     showDialog(
-      context: context,
-      builder: (context) => DialogWindow(
-        width: widget.width,
-        submission: submission,
-        image: image,
-      ),
-    );
+        context: context,
+        builder: (context) => DialogWindow(
+            width: widget.width, submission: submission, image: image));
   }
 
   Widget getStatusBadge(String status) {
     Color badgeColor;
     IconData icon;
-
     switch (status) {
       case "Accepted":
         badgeColor = Color(0xFF48A868);
@@ -326,28 +321,20 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: badgeColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(3),
-        border: Border.all(color: badgeColor),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+            color: badgeColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(3),
+            border: Border.all(color: badgeColor)),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(icon, size: 12, color: badgeColor),
           SizedBox(width: 4),
-          Text(
-            status,
-            style: TextStyle(
-              color: badgeColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 11,
-              fontFamily: 'Arial',
-            ),
-          ),
-        ],
-      ),
-    );
+          Text(status,
+              style: TextStyle(
+                  color: badgeColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11,
+                  fontFamily: 'Arial'))
+        ]));
   }
 }

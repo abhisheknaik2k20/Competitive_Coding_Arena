@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class Submission {
   final String username;
   final String language;
-  final DateTime submittedAt;
   final String status;
   final int executionTimeMs;
   final int memoryUsageKb;
@@ -16,7 +15,6 @@ class Submission {
   Submission({
     required this.username,
     required this.language,
-    required this.submittedAt,
     required this.status,
     required this.executionTimeMs,
     required this.memoryUsageKb,
@@ -45,7 +43,6 @@ List<Submission> submissions = [
     ],
     username: "coding_master",
     language: "C++",
-    submittedAt: DateTime.now().subtract(Duration(minutes: 5)),
     status: "Accepted",
     executionTimeMs: 45,
     memoryUsageKb: 8124,
@@ -98,7 +95,6 @@ List<Submission> submissions = [
     tags: ["logic_error", "wrong_algorithm", "python"],
     username: "flutter_dev",
     language: "Python",
-    submittedAt: DateTime.now().subtract(Duration(minutes: 8)),
     status: "Wrong Answer",
     executionTimeMs: 67,
     memoryUsageKb: 10240,
@@ -109,7 +105,6 @@ List<Submission> submissions = [
     tags: ["time_complexity", "optimization_needed", "java"],
     username: "algorithm_guru",
     language: "Java",
-    submittedAt: DateTime.now().subtract(Duration(minutes: 15)),
     status: "Time Limit Exceeded",
     executionTimeMs: 2500,
     memoryUsageKb: 15360,
@@ -120,7 +115,6 @@ List<Submission> submissions = [
     tags: ["syntax_error", "compilation_failure", "beginner"],
     username: "new_coder123",
     language: "C++",
-    submittedAt: DateTime.now().subtract(Duration(minutes: 20)),
     status: "Compilation Error",
     executionTimeMs: 0,
     memoryUsageKb: 0,
@@ -131,7 +125,6 @@ List<Submission> submissions = [
     tags: ["runtime_exception", "javascript", "error_handling"],
     username: "js_ninja",
     language: "JavaScript",
-    submittedAt: DateTime.now().subtract(Duration(minutes: 25)),
     status: "Runtime Error",
     executionTimeMs: 124,
     memoryUsageKb: 12288,
@@ -142,7 +135,6 @@ List<Submission> submissions = [
     tags: ["optimized", "fast_execution", "efficient", "c++"],
     username: "competitive_coder",
     language: "C++",
-    submittedAt: DateTime.now().subtract(Duration(hours: 1)),
     status: "Accepted",
     executionTimeMs: 32,
     memoryUsageKb: 7168,

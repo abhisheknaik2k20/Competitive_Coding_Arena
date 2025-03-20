@@ -53,13 +53,28 @@ class PreviewSubmission extends StatelessWidget {
           SizedBox(
             width: 5,
           ),
-          Text(
-            "${submission.username}'s ${submission.language} Submission",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Roboto',
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "${submission.username}'s ",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Roboto',
+                  ),
+                ),
+                TextSpan(
+                  text: "${submission.language} Submission",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Roboto',
+                  ),
+                ),
+              ],
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -206,7 +221,7 @@ class PreviewSubmission extends StatelessWidget {
       case "javascript":
         return Syntax.JAVASCRIPT;
       default:
-        return Syntax.DART; // Default to Dart syntax
+        return Syntax.DART;
     }
   }
 
