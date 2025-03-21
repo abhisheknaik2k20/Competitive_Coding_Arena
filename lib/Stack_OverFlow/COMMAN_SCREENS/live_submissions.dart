@@ -6,69 +6,64 @@ import 'package:flutter/material.dart';
 class LiveSubmissions extends StatefulWidget {
   final String docref;
   final double width;
-
-  const LiveSubmissions({
-    required this.docref,
-    required this.width,
-    super.key,
-  });
-
+  const LiveSubmissions({required this.docref, required this.width, super.key});
   @override
   State<LiveSubmissions> createState() => _LiveSubmissionsState();
 }
 
 class _LiveSubmissionsState extends State<LiveSubmissions> {
-  List<Submission> _submissions = [];
-  bool _isLoading = true;
   String _filterStatus = "All";
-  static const _colors = AppColors();
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchSubmissions();
-  }
-
-  Future<void> _fetchSubmissions() async {
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      setState(() {
-        _submissions = submissions;
-        _isLoading = false;
-      });
-    }
-  }
-
-  List<Submission> _getFilteredSubmissions() => _submissions
-      .where((s) => _filterStatus == "All" || s.status == _filterStatus)
-      .toList();
-
   @override
   Widget build(BuildContext context) {
-    final filteredSubmissions = _getFilteredSubmissions();
     return Container(
         width: widget.width * 0.3,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(3),
-            border: Border.all(color: _colors.gray)),
+            border: Border.all(color: AppColors().gray)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           _buildHeader(),
           _buildFilterBar(),
           Expanded(
-              child: _isLoading
-                  ? _buildLoadingIndicator()
-                  : filteredSubmissions.isEmpty
-                      ? _buildEmptyState()
-                      : _buildSubmissionsList(filteredSubmissions))
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('stack_overflow_problems')
+                      .doc(widget.docref)
+                      .collection('submissions')
+                      .orderBy('time_stamp', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return _buildLoadingIndicator();
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text("Error: ${snapshot.error}",
+                              style: const TextStyle(
+                                  color: Colors.red, fontFamily: 'Roboto')));
+                    }
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return _buildEmptyState();
+                    }
+                    List<Submission> submissions = snapshot.data!.docs
+                        .map((doc) => Submission.fromFirestore(doc))
+                        .toList();
+                    final filteredSubmissions = submissions
+                        .where((s) =>
+                            _filterStatus == "All" || s.status == _filterStatus)
+                        .toList();
+                    return filteredSubmissions.isEmpty
+                        ? _buildEmptyState()
+                        : _buildSubmissionsList(filteredSubmissions);
+                  }))
         ]));
   }
 
   Widget _buildHeader() => Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _colors.lightGray,
-        border: Border(bottom: BorderSide(color: _colors.gray)),
+        color: AppColors().lightGray,
+        border: Border(bottom: BorderSide(color: AppColors().gray)),
       ),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         const Text("Live Submissions",
@@ -76,8 +71,8 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: AppColors.black,
-                fontFamily: 'Arial')),
-        _buildTagBadge("Problem"),
+                fontFamily: 'Roboto')),
+        _buildTagBadge("Problem")
       ]));
 
   Widget _buildFilterBar() => Padding(
@@ -90,10 +85,10 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
                     labelStyle: const TextStyle(
                         color: Color(0xFF6A737C),
                         fontSize: 13,
-                        fontFamily: 'Arial'),
+                        fontFamily: 'Roboto'),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(3),
-                        borderSide: BorderSide(color: _colors.gray)),
+                        borderSide: BorderSide(color: AppColors().gray)),
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     focusedBorder: OutlineInputBorder(
@@ -105,7 +100,7 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
                         value: status,
                         child: Text(status,
                             style: const TextStyle(
-                                fontSize: 13, fontFamily: 'Arial'))))
+                                fontSize: 13, fontFamily: 'Roboto'))))
                     .toList(),
                 onChanged: (value) {
                   if (mounted && value != null) {
@@ -117,14 +112,14 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
 
   Widget _buildLoadingIndicator() => Center(
       child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(_colors.orange)));
+          valueColor: AlwaysStoppedAnimation<Color>(AppColors().orange)));
 
   Widget _buildEmptyState() => const Center(
       child: Text("No submissions match the current filters",
           style: TextStyle(
               color: Color(0xFF6A737C),
               fontStyle: FontStyle.italic,
-              fontFamily: 'Arial')));
+              fontFamily: 'Roboto')));
 
   Image _getImage(Submission sub) {
     if (sub.imageUrl != null) {
@@ -143,7 +138,7 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
             final isEven = index % 2 == 0;
             return Column(children: [
               ListTile(
-                  tileColor: isEven ? Colors.white : _colors.lightGray,
+                  tileColor: isEven ? Colors.white : AppColors().lightGray,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(3)),
                   contentPadding: const EdgeInsets.all(12),
@@ -157,10 +152,10 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
                         _buildStatusRow(submission),
                         const SizedBox(height: 4),
                         _buildResourceUsage(submission),
-                        _buildTagsRow(submission),
+                        _buildTagsRow(submission)
                       ])),
               if (index < submissions.length - 1)
-                Divider(color: _colors.gray, height: 1)
+                Divider(color: AppColors().gray, height: 1)
             ]);
           });
 
@@ -178,16 +173,18 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
                   color: AppColors.linkColor,
                   fontWeight: FontWeight.w500,
                   fontSize: 20,
-                  fontFamily: 'Arial'))
+                  fontFamily: 'Roboto'))
         ]),
         Text(getRelativeTime(submission.time_stamp),
             style: const TextStyle(
-                color: Color(0xFF6A737C), fontSize: 11, fontFamily: 'Arial'))
+                color: Color(0xFF6A737C), fontSize: 11, fontFamily: 'Roboto'))
       ]);
 
-  Widget _buildStatusRow(Submission submission) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [_buildTagBadge(submission.language)]);
+  Widget _buildStatusRow(Submission submission) =>
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        _buildTagBadge(submission.language),
+        getStatusBadge(submission.status)
+      ]);
 
   Widget _buildResourceUsage(Submission submission) => Text(
       "${submission.executionTimeMs} ms, ${submission.memoryUsageKb / 1024} MB",
@@ -195,7 +192,7 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
           color: Color(0xFF6A737C),
           fontSize: 11,
           fontStyle: FontStyle.italic,
-          fontFamily: 'Arial'));
+          fontFamily: 'Roboto'));
 
   Widget _buildTagsRow(Submission submission) => Wrap(
       children: submission.tags.map((tag) => TagBadge(label: tag)).toList());
@@ -203,10 +200,11 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
   Widget _buildTagBadge(String label) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-          color: _colors.tagBackground, borderRadius: BorderRadius.circular(3)),
+          color: AppColors().tagBackground,
+          borderRadius: BorderRadius.circular(3)),
       child: Text(label,
           style: TextStyle(
-              color: AppColors.tagText, fontSize: 11, fontFamily: 'Arial')));
+              color: AppColors.tagText, fontSize: 11, fontFamily: 'Roboto')));
 
   String getRelativeTime(Timestamp timestamp) {
     DateTime postDate = timestamp.toDate();
@@ -275,7 +273,7 @@ class _LiveSubmissionsState extends State<LiveSubmissions> {
                   color: badgeColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 11,
-                  fontFamily: 'Arial'))
+                  fontFamily: 'Roboto'))
         ]));
   }
 }

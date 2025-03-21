@@ -45,24 +45,23 @@ class PreviewSubmission extends StatelessWidget {
             width: 5,
           ),
           Text.rich(
-            TextSpan(children: [
-              TextSpan(
-                  text: "${submission.username}'s ",
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Roboto')),
-              TextSpan(
-                  text: "${submission.language} Submission",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Roboto'))
-            ]),
-            overflow: TextOverflow.ellipsis,
-          ),
+              TextSpan(children: [
+                TextSpan(
+                    text: "${submission.username}'s ",
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto')),
+                TextSpan(
+                    text: "${submission.language} Submission",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto'))
+              ]),
+              overflow: TextOverflow.ellipsis),
           Expanded(child: Container()),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -84,9 +83,7 @@ class PreviewSubmission extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5))),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: Icon(Icons.close, color: Colors.white, size: 30))
         ]),
         content: SizedBox(
@@ -98,19 +95,17 @@ class PreviewSubmission extends StatelessWidget {
                     children: [
                   Row(children: [
                     Text(
-                      "${submission.executionTimeMs} ms  •  ${(submission.memoryUsageKb / 1024).toStringAsFixed(2)} MB",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.italic,
-                        letterSpacing: 0.5,
-                        foreground: Paint()
-                          ..shader = LinearGradient(
-                            colors: [Color(0xFF6A737C), Color(0xFF4A90E2)],
-                          ).createShader(Rect.fromLTWH(0, 0, 200, 30)),
-                        fontFamily: 'Arial',
-                      ),
-                    ),
+                        "${submission.executionTimeMs} ms  •  ${(submission.memoryUsageKb / 1024).toStringAsFixed(2)} MB",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.italic,
+                            letterSpacing: 0.5,
+                            foreground: Paint()
+                              ..shader = LinearGradient(
+                                colors: [Color(0xFF6A737C), Color(0xFF4A90E2)],
+                              ).createShader(Rect.fromLTWH(0, 0, 200, 30)),
+                            fontFamily: 'Arial'))
                   ]),
                   SizedBox(height: 8),
                   Wrap(
@@ -151,14 +146,12 @@ class PreviewSubmission extends StatelessWidget {
                     : Colors.transparent,
                 border: Border.all(color: color, width: 1)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              Text(
-                label,
-                style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 11,
-                    fontFamily: 'Arial'),
-              )
+              Text(label,
+                  style: TextStyle(
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                      fontFamily: 'Arial'))
             ])));
   }
 

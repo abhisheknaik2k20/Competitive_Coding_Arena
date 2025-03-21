@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Submission {
+  String? id;
   final String username;
   final String language;
   final String status;
@@ -13,6 +14,7 @@ class Submission {
   final Timestamp time_stamp;
 
   Submission({
+    this.id,
     required this.username,
     required this.language,
     required this.status,
@@ -23,6 +25,36 @@ class Submission {
     required this.time_stamp,
     this.imageUrl,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'username': username,
+      'language': language,
+      'status': status,
+      'executionTimeMs': executionTimeMs,
+      'memoryUsageKb': memoryUsageKb,
+      'code': code,
+      'tags': tags,
+      'time_stamp': time_stamp,
+      'imageUrl': imageUrl,
+    };
+  }
+
+  factory Submission.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Submission(
+      id: doc.id,
+      username: data['username'] ?? '',
+      language: data['language'] ?? '',
+      status: data['status'] ?? '',
+      executionTimeMs: data['executionTimeMs'] ?? 0,
+      memoryUsageKb: data['memoryUsageKb'] ?? 0,
+      code: data['code'] ?? '',
+      tags: List<String>.from(data['tags'] ?? []),
+      time_stamp: data['time_stamp'] ?? Timestamp.now(),
+      imageUrl: data['imageUrl'],
+    );
+  }
 }
 
 final List<String> statuses = [

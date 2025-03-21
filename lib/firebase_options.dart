@@ -26,7 +26,7 @@ class DefaultFirebaseOptions {
         return ios;
       case TargetPlatform.macOS:
         return macos;
-      case TargetPlatform.windows: 
+      case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
           'you can reconfigure this by running the FlutterFire CLI again.',
@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '702832973350',
     projectId: 'leetcode-94c79',
     storageBucket: 'leetcode-94c79.appspot.com',
-    iosClientId: '702832973350-0s560ph506hudvdrh5ufn7s34l47kcqv.apps.googleusercontent.com',
+    iosClientId:
+        '702832973350-0s560ph506hudvdrh5ufn7s34l47kcqv.apps.googleusercontent.com',
     iosBundleId: 'com.example.leetcodeclone',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '702832973350',
     projectId: 'leetcode-94c79',
     storageBucket: 'leetcode-94c79.appspot.com',
-    iosClientId: '702832973350-utup3sc9i56g4nme7kdkh804gsc0meot.apps.googleusercontent.com',
+    iosClientId:
+        '702832973350-utup3sc9i56g4nme7kdkh804gsc0meot.apps.googleusercontent.com',
     iosBundleId: 'com.example.leetcodeclone.RunnerTests',
   );
 }
