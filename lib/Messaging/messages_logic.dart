@@ -23,15 +23,18 @@ class PushNotification {
     return credentials.accessToken.data;
   }
 
-  static sendNotification(String token) async {
+  static sendNotification(
+      {required String token,
+      required String title,
+      required String body}) async {
     final String serverKey = await getAccessToken();
     String endPointFirebaseCloudMessaging = ApiKeys().firebasendpoint;
     final Map<String, dynamic> message = {
       'message': {
         'token': token,
         'notification': {
-          'title': "WELCOME!!!",
-          'body': "START YOUR CODING JOURNEY",
+          'title': title,
+          'body': body,
         },
       }
     };
@@ -43,9 +46,9 @@ class PushNotification {
         },
         body: jsonEncode(message));
     if (response.statusCode == 200) {
-      print("SucessFul");
+      print("Notification Sent Successfully");
     } else {
-      print("Failed");
+      print("Failed to send notification");
     }
   }
 }
@@ -64,10 +67,9 @@ Future<void> requestNotificationPermissions() async {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       String? token = await generateTokenForUser();
-      print(token ?? "NOT GENERATED");
+      token != null ? print("Token Generated") : print("Token Not Generated");
       if (token != null && FirebaseAuth.instance.currentUser != null) {
         await updatetoken(token, FirebaseAuth.instance.currentUser!);
-        //    PushNotification.sendNotification(token); //To test if notifications work
       }
     }
     _configureMessageListeners();

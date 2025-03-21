@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:competitivecodingarena/API_KEYS/api.dart';
 import 'package:competitivecodingarena/Core_Project/CodeScreen/Submissions/submission.dart';
+import 'package:competitivecodingarena/Core_Project/CodeScreen/invite_friends.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:competitivecodingarena/Core_Project/CodeScreen/dragcontain.dart';
@@ -485,77 +486,84 @@ class _BlackScreenState extends State<BlackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          SizedBox(
-            width:
-                widget.isOnline ? widget.size.width * 0.8 : widget.size.width,
-            child: Stack(
-              children: [
-                ...containers,
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  child: SizedBox(
-                    height: 50,
-                    child: Container(
-                      width: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade800,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: widget.isOnline
-                            ? onlineContainers
-                                .map((container) => TextButton.icon(
-                                    onPressed: () => _addContainer(
-                                        widget.problem,
+        body: Row(
+          children: [
+            SizedBox(
+              width:
+                  widget.isOnline ? widget.size.width * 0.8 : widget.size.width,
+              child: Stack(
+                children: [
+                  ...containers,
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    child: SizedBox(
+                      height: 50,
+                      child: Container(
+                        width: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade800,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: widget.isOnline
+                              ? onlineContainers
+                                  .map((container) => TextButton.icon(
+                                      onPressed: () => _addContainer(
+                                          widget.problem,
+                                          container['name'],
+                                          container['icon'],
+                                          container['color']),
+                                      icon: Icon(container['icon'],
+                                          color: container['color']),
+                                      label: Text(container['name'],
+                                          style: const TextStyle(
+                                              color: Colors.white))))
+                                  .toList()
+                              : availableContainers
+                                  .map(
+                                    (container) => TextButton.icon(
+                                      onPressed: () => _addContainer(
+                                          widget.problem,
+                                          container['name'],
+                                          container['icon'],
+                                          container['color']),
+                                      icon: Icon(container['icon'],
+                                          color: container['color']),
+                                      label: Text(
                                         container['name'],
-                                        container['icon'],
-                                        container['color']),
-                                    icon: Icon(container['icon'],
-                                        color: container['color']),
-                                    label: Text(container['name'],
                                         style: const TextStyle(
-                                            color: Colors.white))))
-                                .toList()
-                            : availableContainers
-                                .map(
-                                  (container) => TextButton.icon(
-                                    onPressed: () => _addContainer(
-                                        widget.problem,
-                                        container['name'],
-                                        container['icon'],
-                                        container['color']),
-                                    icon: Icon(container['icon'],
-                                        color: container['color']),
-                                    label: Text(
-                                      container['name'],
-                                      style:
-                                          const TextStyle(color: Colors.white),
+                                            color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
+                                  )
+                                  .toList(),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          if (widget.isOnline && _isAgoraInitialized) _buildUserList(),
-        ],
-      ),
-      floatingActionButton:
-          widget.isOnline && _isAgoraInitialized && selected == 0
-              ? FloatingActionButton(
-                  onPressed: _toggleAudio,
-                  backgroundColor: Colors.blue[400],
-                  child: Icon(_isAudioOn ? Icons.mic : Icons.mic_off),
-                )
-              : null,
-    );
+            if (widget.isOnline && _isAgoraInitialized) _buildUserList(),
+          ],
+        ),
+        floatingActionButton:
+            widget.isOnline && _isAgoraInitialized && selected == 0
+                ? Row(mainAxisSize: MainAxisSize.min, children: [
+                    FloatingActionButton(
+                      onPressed: _toggleAudio,
+                      backgroundColor: Colors.blue[400],
+                      child: Icon(_isAudioOn ? Icons.mic : Icons.mic_off),
+                    ),
+                    SizedBox(width: 10),
+                    InviteFriendsButton(
+                      title:
+                          "${(FirebaseAuth.instance.currentUser?.displayName?.split(' ').first ?? 'User')}'s Inviting",
+                      body: 'The Team code is ${widget.teamid}',
+                    )
+                  ])
+                : null);
   }
 
   void _addContainer(
