@@ -256,8 +256,8 @@ class _BlackScreenState extends State<BlackScreen> {
                 });
               },
               colors: SegmentedButtonSlideColors(
-                  barColor: Colors.pink.shade500,
-                  backgroundSelectedColor: Colors.pink.shade300),
+                  barColor: Colors.blue.shade500,
+                  backgroundSelectedColor: Colors.blue.shade300),
             ),
           ),
           Expanded(
@@ -400,7 +400,7 @@ class _BlackScreenState extends State<BlackScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.pink[300]!),
+                  borderSide: BorderSide(color: Colors.blue[300]!),
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),

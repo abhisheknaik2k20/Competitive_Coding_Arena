@@ -135,7 +135,7 @@ class _SubmissionsState extends State<Submissions>
         actions: [SegmentedButton()],
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator(color: Colors.pink))
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : SizedBox(
               height: MediaQuery.sizeOf(context).height,
               width: MediaQuery.sizeOf(context).width,
@@ -244,7 +244,7 @@ class _SubmissionsState extends State<Submissions>
         decoration: BoxDecoration(
           gradient: isSelected
               ? LinearGradient(
-                  colors: [Colors.pink.shade400, Colors.pink.shade600],
+                  colors: [Colors.blue.shade400, Colors.blue.shade600],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 )
