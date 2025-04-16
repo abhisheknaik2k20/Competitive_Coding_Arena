@@ -7,15 +7,15 @@ List<String> imagscr = [
 ];
 
 List<String> imagscr2 = [
-  "assets/images/top150.png",
-  "assets/images/leetcode75.png",
-  "assets/images/sql50.png"
+  "https://assets.leetcode.com/study_plan_v2/top-interview-150/cover",
+  "https://assets.leetcode.com/study_plan_v2/leetcode-75/cover",
+  "https://assets.leetcode.com/study_plan_v2/top-sql-50/cover"
 ];
 
 List<String> imgscr3 = [
-  "assets/images/pandas.png",
-  "assets/images/javascript30.png",
-  "assets/images/amazonSpring.png",
+  "https://assets.leetcode.com/study_plan_v2/introduction-to-pandas/cover",
+  "https://assets.leetcode.com/study_plan_v2/30-days-of-javascript/cover",
+  "https://assets.leetcode.com/study_plan_v2/amazon-spring-23-high-frequency/cover",
 ];
 
 List<Map<String, String>> text1 = [

@@ -1,4 +1,4 @@
-import 'package:competitivecodingarena/AWS/Call_Logic/compiler_call.dart';
+import 'package:competitivecodingarena/AWS/compiler_call.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/WEB/browser_view.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/WEB/htmlcss_code_snippets.dart';
 import 'package:flutter/material.dart';
@@ -218,7 +218,7 @@ class _ProblemDescriptionState extends State<ProblemDescription> {
           Row(
             children: [
               Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
                     onPressed: _upvote,

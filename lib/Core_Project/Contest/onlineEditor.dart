@@ -8,7 +8,7 @@ import 'package:highlight/highlight_core.dart';
 import 'package:highlight/languages/cpp.dart';
 import 'package:highlight/languages/java.dart';
 import 'package:highlight/languages/python.dart';
-import 'package:competitivecodingarena/AWS/Call_Logic/compiler_call.dart';
+import 'package:competitivecodingarena/AWS/compiler_call.dart';
 
 class OnlineCodeEditor extends StatefulWidget {
   final String? teamid;

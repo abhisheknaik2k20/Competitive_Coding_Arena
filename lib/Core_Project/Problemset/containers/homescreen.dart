@@ -18,62 +18,27 @@ class LeetCodeProblemsetHomescreen extends StatefulWidget {
 class _LeetCodeProblemsetHomescreenState
     extends State<LeetCodeProblemsetHomescreen> {
   String selectedItem = "Problems";
-
-  List<Widget> buildHeader() {
-    return [
-      HomeAppBar(
-        setItem: setItem,
-      ),
-    ];
-  }
-
-  setItem(String item) {
-    setState(() {
-      selectedItem = item;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Widget _buildCurrentScreen() {
-    return AnimatedSwitcher(
+  setItem(String item) => setState(() => selectedItem = item);
+  Widget _buildCurrentScreen() => AnimatedSwitcher(
       duration: const Duration(milliseconds: 400),
       transitionBuilder: (Widget child, Animation<double> animation) {
         return FadeTransition(
-          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeOutCubic,
-            ),
-          ),
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0.05, 0.0),
-              end: Offset.zero,
-            ).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOutCubic,
-              ),
-            ),
-            child: child,
-          ),
-        );
+            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+            child: SlideTransition(
+                position: Tween<Offset>(
+                        begin: const Offset(0.05, 0.0), end: Offset.zero)
+                    .animate(CurvedAnimation(
+                        parent: animation, curve: Curves.easeOutCubic)),
+                child: child));
       },
       layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
-        return Stack(
-          children: <Widget>[
-            ...previousChildren,
-            if (currentChild != null) currentChild,
-          ],
-        );
+        return Stack(children: <Widget>[
+          ...previousChildren,
+          if (currentChild != null) currentChild
+        ]);
       },
-      child: Center(child: _getCurrentScreen()),
-    );
-  }
+      child: Center(child: _getCurrentScreen()));
 
   Widget _getCurrentScreen() {
     switch (selectedItem) {
@@ -91,16 +56,9 @@ class _LeetCodeProblemsetHomescreenState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          ...buildHeader(),
-          SliverToBoxAdapter(
-            child: _buildCurrentScreen(),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+          body: CustomScrollView(slivers: [
+        HomeAppBar(setItem: setItem),
+        SliverToBoxAdapter(child: _buildCurrentScreen())
+      ]));
 }

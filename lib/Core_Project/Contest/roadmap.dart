@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:competitivecodingarena/API_KEYS/api.dart';
-import 'package:competitivecodingarena/AWS/Call_Logic/compiler_call.dart';
+import 'package:competitivecodingarena/AWS/compiler_call.dart';
 import 'package:competitivecodingarena/Snackbars&Pbars/snackbars.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

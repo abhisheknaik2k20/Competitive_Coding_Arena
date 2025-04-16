@@ -1,3 +1,4 @@
+import 'package:competitivecodingarena/Stack_OverFlow/DIALOG/create_problem.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/stack_screen_data.dart';
 import 'package:dev_icons/dev_icons.dart';
@@ -147,7 +148,7 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
           Text('No questions found in $category category'),
           const SizedBox(height: 16),
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () => CreateProblemScreen(),
             icon: const Icon(Icons.add),
             label: const Text('Ask a question'),
           ),
@@ -354,7 +355,9 @@ class _StackOverflowHomePageState extends State<StackOverflowHomePage>
               ),
               const Spacer(),
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => CreateProblemScreen()),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue.shade600,
                   foregroundColor: Colors.white,

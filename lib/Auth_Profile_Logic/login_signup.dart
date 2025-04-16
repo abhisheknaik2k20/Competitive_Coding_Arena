@@ -23,11 +23,8 @@ Future<void> updatetoken(String token, User user) async {
   try {
     final userDoc =
         FirebaseFirestore.instance.collection('users').doc(user.uid);
-    await userDoc.update({
-      'token': token,
-    });
+    await userDoc.update({'token': token});
   } catch (exception) {
-    // ignore: avoid_print
     print(exception);
   }
 }
@@ -44,21 +41,15 @@ Future<void> saveUserDataToFirestore(User user, {String? name}) async {
       'lastLogin': FieldValue.serverTimestamp(),
       'roadmap': null,
       'token': token,
-      'isPremium': false,
+      'isPremium': false
     });
   } else {
-    await userDoc.update({
-      'lastLogin': FieldValue.serverTimestamp(),
-      'token': token,
-    });
+    await userDoc
+        .update({'lastLogin': FieldValue.serverTimestamp(), 'token': token});
   }
 }
 
-void loginLogic(
-  BuildContext context,
-  String email,
-  String password,
-) async {
+void loginLogic(BuildContext context, String email, String password) async {
   bool isLoginSuccessful = false;
   showCircularbar(context);
   try {
@@ -73,11 +64,10 @@ void loginLogic(
   if (isLoginSuccessful) {
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (context) => LeetCodeProblemsetHomescreen(
-                size: MediaQuery.of(context).size)),
-        (Route<dynamic> route) => false,
-      );
+          MaterialPageRoute(
+              builder: (context) => LeetCodeProblemsetHomescreen(
+                  size: MediaQuery.of(context).size)),
+          (Route<dynamic> route) => false);
     } else {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => const VerifyMail()));
@@ -86,11 +76,7 @@ void loginLogic(
 }
 
 void signUpLogic(
-  BuildContext context,
-  String email,
-  String password,
-  String name,
-) async {
+    BuildContext context, String email, String password, String name) async {
   showCircularbar(context);
   bool isSignupSuccessful = false;
   try {
@@ -123,9 +109,8 @@ void logoutLogic(BuildContext context) async {
   Navigator.of(context).pop();
   if (isLoginOutSuccessful) {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-      (Route<dynamic> route) => false,
-    );
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+        (Route<dynamic> route) => false);
   }
 }
 
@@ -149,9 +134,7 @@ Future<UserCredential?> gitHubSignIn(BuildContext context) async {
     final githubAuthProvider = GithubAuthProvider();
     githubAuthProvider.addScope('read:user');
     githubAuthProvider.addScope('user:email');
-    githubAuthProvider.setCustomParameters({
-      'allow_signup': 'true',
-    });
+    githubAuthProvider.setCustomParameters({'allow_signup': 'true'});
     try {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithPopup(githubAuthProvider);

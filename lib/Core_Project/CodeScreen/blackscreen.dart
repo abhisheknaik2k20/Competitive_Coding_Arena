@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:competitivecodingarena/Core_Project/CodeScreen/dragcontain.dart';
 import 'package:competitivecodingarena/Core_Project/Problemset/examples/exampleprobs.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:segmented_button_slide/segmented_button_slide.dart';
 
@@ -385,23 +386,32 @@ class _BlackScreenState extends State<BlackScreen> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              controller: tc,
-              cursorColor: Colors.blue,
-              style: TextStyle(color: Colors.grey[900]),
-              decoration: InputDecoration(
-                hintText: 'Type your message...',
-                hintStyle: TextStyle(color: Colors.grey[600]),
-                border: InputBorder.none,
-                filled: true,
-                fillColor: Colors.grey[300],
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue[300]!),
-                  borderRadius: BorderRadius.circular(5),
+            child: RawKeyboardListener(
+              focusNode: FocusNode(),
+              onKey: (RawKeyEvent event) {
+                if (event is RawKeyDownEvent &&
+                    event.logicalKey == LogicalKeyboardKey.enter) {
+                  _sendMessage();
+                }
+              },
+              child: TextField(
+                controller: tc,
+                cursorColor: Colors.blue,
+                style: TextStyle(color: Colors.grey[900]),
+                decoration: InputDecoration(
+                  hintText: 'Type your message...',
+                  hintStyle: TextStyle(color: Colors.grey[600]),
+                  border: InputBorder.none,
+                  filled: true,
+                  fillColor: Colors.grey[300],
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue[300]!),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                 ),
               ),
             ),

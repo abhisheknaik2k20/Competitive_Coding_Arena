@@ -67,37 +67,8 @@ flutter:
 
   assets:
   - assets/images/bg.png
-  - assets/images/data.png
-  - assets/images/course.png
-  - assets/images/logo.png
-  - assets/images/verification.png
-  - assets/images/userpng.png
-  - assets/images/list.png
-  - assets/images/progress.png
-  - assets/images/trophy.png
-  - assets/images/settings.png
-  - assets/images/help.png 
-  - assets/images/amazonSpring.png 
-  - assets/images/javascript30.png 
-  - assets/images/leetcode75.png 
-  - assets/images/pandas.png 
-  - assets/images/sql50.png 
-  - assets/images/top150.png 
+  - assets/images/logo.png 
   - assets/sounds/mp.mp3
-  - assets/images/stflow.png
-  - assets/avatars/0.jpg
-  - assets/avatars/1.jpg
-  - assets/avatars/2.jpg
-  - assets/avatars/3.jpg
-  - assets/avatars/4.jpg
-  - assets/avatars/5.jpg
-  - assets/avatars/6.jpg
-  - assets/avatars/7.jpg
-  - assets/avatars/8.jpg
-  - assets/avatars/9.jpg
-  - assets/avatars/10.jpg
-  - assets/avatars/11.jpg
-  - assets/avatars/12.jpg
   
 flutter_native_splash:
   color: "#000000"

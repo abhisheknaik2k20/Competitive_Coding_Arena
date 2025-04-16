@@ -111,10 +111,10 @@ class _ScreenBannerAndFeatured extends State<ScreenBannerAndFeatured>
                         ),
                         child: Hero(
                           tag: 'trophy',
-                          child: Image.asset(
-                            'assets/images/trophy.png',
-                            height: widget.size.height * 0.25,
-                            filterQuality: FilterQuality.high,
+                          child: Icon(
+                            Icons.emoji_events_outlined,
+                            size: widget.size.height * 0.25,
+                            color: Colors.amber.shade700,
                           ),
                         ),
                       ),

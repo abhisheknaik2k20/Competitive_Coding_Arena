@@ -85,9 +85,7 @@ class _AdsAndCalenderAndProblemsState extends State<AdsAndCalenderAndProblems> {
             decoration: containerDecoration(context),
             child: Row(
               children: [
-                Image.asset(
-                  assetImagePaths[i],
-                ),
+                Image.network(assetImagePaths[i]),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -222,7 +220,10 @@ class _AdsAndCalenderAndProblemsState extends State<AdsAndCalenderAndProblems> {
           const SizedBox(height: 10),
           Row(
             children: [
-              Image.asset('assets/images/sql50.png', height: 80, width: 80),
+              Image.network(
+                  'https://assets.leetcode.com/study_plan_v2/leetcode-75/cover',
+                  height: 80,
+                  width: 80),
               const SizedBox(width: 15),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

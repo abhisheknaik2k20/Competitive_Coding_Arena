@@ -8,7 +8,7 @@ import 'package:highlight/languages/python.dart';
 import 'package:highlight/languages/cpp.dart';
 import 'package:highlight/languages/java.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
-import 'package:competitivecodingarena/AWS/Call_Logic/compiler_call.dart';
+import 'package:competitivecodingarena/AWS/compiler_call.dart';
 import 'package:competitivecodingarena/Core_Project/Problemset/examples/exampleprobs.dart';
 import '../providers.dart';
 

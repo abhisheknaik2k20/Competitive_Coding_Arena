@@ -43,7 +43,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Show snackbar after build is complete
     if (isContestEnded) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -377,7 +376,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
         ),
         title: Row(
           children: [
@@ -399,6 +398,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 10),
             TextField(
+              onSubmitted: (_) {
+                Navigator.pop(context);
+                sendToBlackScreen(context);
+              },
               controller: _teamNameController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(

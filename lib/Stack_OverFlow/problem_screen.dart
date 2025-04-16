@@ -4,7 +4,7 @@ import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/live_submis
 import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/problem_description.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/problem_statement.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/problem_title.dart';
-import 'package:competitivecodingarena/Stack_OverFlow/COMMAN_SCREENS/submit_solution.dart';
+import 'package:competitivecodingarena/Stack_OverFlow/DIALOG/submit_solution.dart';
 import 'package:competitivecodingarena/Stack_OverFlow/problem_class.dart';
 import 'package:flutter/material.dart';
 
