@@ -10,7 +10,6 @@ Future<Map<String, dynamic>> callCompiler(
     BuildContext context, String language, String code,
     {bool showProgress = true}) async {
   if (showProgress) showCircularbar(context);
-
   try {
     final response = await http.post(Uri.parse(ApiKeys().compilerCall),
         headers: <String, String>{

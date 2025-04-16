@@ -15,6 +15,7 @@ class StackOverFlowProblemClass {
   final int views;
   final int answers;
   final List<String> tags;
+  final String difficulty;
 
   StackOverFlowProblemClass({
     required this.name,
@@ -30,6 +31,7 @@ class StackOverFlowProblemClass {
     required this.answers,
     this.problem_id,
     required this.tags,
+    required this.difficulty,
   });
 
   Map<String, dynamic> toMap() {
@@ -46,7 +48,8 @@ class StackOverFlowProblemClass {
       'upvotes': upvotes,
       'downvotes': downvotes,
       'views': views,
-      'answers': answers
+      'answers': answers,
+      'difficulty': difficulty,
     };
   }
 
@@ -64,7 +67,8 @@ class StackOverFlowProblemClass {
         views: map['views'],
         upvotes: map['upvotes'],
         downvotes: map['downvotes'],
-        answers: map['answers']);
+        answers: map['answers'],
+        difficulty: map['difficulty']);
   }
 
   static Syntax _stringToSyntax(String syntaxString) {

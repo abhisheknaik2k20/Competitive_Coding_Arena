@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:competitivecodingarena/Core_Project/Problemset/containers/homescreen.dart';
 import 'package:competitivecodingarena/Snackbars&Pbars/snackbars.dart';
-import 'package:competitivecodingarena/Auth_Profile_Logic/VerifyMail/verifyMail.dart';
 import 'package:competitivecodingarena/Welcome/welcome.dart';
 
 Future<String?> generateTokenForUser() async {
@@ -49,54 +47,6 @@ Future<void> saveUserDataToFirestore(User user, {String? name}) async {
   }
 }
 
-void loginLogic(BuildContext context, String email, String password) async {
-  bool isLoginSuccessful = false;
-  showCircularbar(context);
-  try {
-    final userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-    await saveUserDataToFirestore(userCredential.user!);
-    isLoginSuccessful = true;
-  } on FirebaseAuthException catch (e) {
-    showSnackBar(context, e.code);
-  }
-  Navigator.of(context).pop();
-  if (isLoginSuccessful) {
-    if (FirebaseAuth.instance.currentUser!.emailVerified) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) => LeetCodeProblemsetHomescreen(
-                  size: MediaQuery.of(context).size)),
-          (Route<dynamic> route) => false);
-    } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const VerifyMail()));
-    }
-  }
-}
-
-void signUpLogic(
-    BuildContext context, String email, String password, String name) async {
-  showCircularbar(context);
-  bool isSignupSuccessful = false;
-  try {
-    final userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    await userCredential.user!.updateDisplayName(name);
-    await userCredential.user!.updatePassword(password);
-    await userCredential.user!.sendEmailVerification();
-    await saveUserDataToFirestore(userCredential.user!, name: name);
-    isSignupSuccessful = true;
-  } on FirebaseAuthException catch (e) {
-    showSnackBar(context, e.code);
-  }
-  Navigator.of(context).pop();
-  if (isSignupSuccessful) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const VerifyMail()));
-  }
-}
-
 void logoutLogic(BuildContext context) async {
   bool isLoginOutSuccessful = false;
   showCircularbar(context);
@@ -127,24 +77,4 @@ Future<UserCredential?> signInWithGoogle(BuildContext context) async {
     showSnackBar(context, e.message!);
     return null;
   }
-}
-
-Future<UserCredential?> gitHubSignIn(BuildContext context) async {
-  try {
-    final githubAuthProvider = GithubAuthProvider();
-    githubAuthProvider.addScope('read:user');
-    githubAuthProvider.addScope('user:email');
-    githubAuthProvider.setCustomParameters({'allow_signup': 'true'});
-    try {
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithPopup(githubAuthProvider);
-      await saveUserDataToFirestore(userCredential.user!);
-      return userCredential;
-    } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!);
-    }
-  } catch (error) {
-    showSnackBar(context, error.toString());
-  }
-  return null;
 }

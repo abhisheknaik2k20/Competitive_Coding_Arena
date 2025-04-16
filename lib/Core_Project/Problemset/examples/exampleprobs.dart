@@ -9,35 +9,32 @@ class Problem {
   final String status;
   final double acceptanceRate;
   final String frequency;
-
-  Problem({
-    required this.id,
-    required this.title,
-    required this.difficulty,
-    required this.content,
-    required this.testcases,
-    required this.status,
-    required this.acceptanceRate,
-    required this.frequency,
-  });
+  Problem(
+      {required this.id,
+      required this.title,
+      required this.difficulty,
+      required this.content,
+      required this.testcases,
+      required this.status,
+      required this.acceptanceRate,
+      required this.frequency});
   factory Problem.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Problem(
-      id: data['id'] ?? '',
-      title: data['title'] ?? '',
-      difficulty: data['difficulty'] ?? '',
-      content: (data['content'] as List<dynamic>?)
-              ?.map((item) => item as Map<String, dynamic>)
-              .toList() ??
-          [],
-      testcases: (data['testcases'] as List<dynamic>?)
-              ?.map((item) => item as Map<String, dynamic>)
-              .toList() ??
-          [],
-      status: data['status'] ?? '',
-      acceptanceRate: (data['acceptanceRate'] as num?)?.toDouble() ?? 0.0,
-      frequency: data['frequency'] ?? '',
-    );
+        id: data['id'] ?? '',
+        title: data['title'] ?? '',
+        difficulty: data['difficulty'] ?? '',
+        content: (data['content'] as List<dynamic>?)
+                ?.map((item) => item as Map<String, dynamic>)
+                .toList() ??
+            [],
+        testcases: (data['testcases'] as List<dynamic>?)
+                ?.map((item) => item as Map<String, dynamic>)
+                .toList() ??
+            [],
+        status: data['status'] ?? '',
+        acceptanceRate: (data['acceptanceRate'] as num?)?.toDouble() ?? 0.0,
+        frequency: data['frequency'] ?? '');
   }
 }
 
@@ -65,7 +62,7 @@ List<Problem> problemexample = [
       {'text': '• 2 <= nums.length <= 10^4\n'},
       {'text': '• -10^9 <= nums[i] <= 10^9\n'},
       {'text': '• -10^9 <= target <= 10^9\n'},
-      {'text': '• Only one valid answer exists.\n'},
+      {'text': '• Only one valid answer exists.\n'}
     ],
     testcases: [
       {

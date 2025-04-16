@@ -208,16 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildActionButton() => ElevatedButton(
-      onPressed: () async {
-        if (_formKey.currentState!.validate()) {
-          if (!_isSignUp) {
-            loginLogic(context, email.text, password.text);
-          } else {
-            signUpLogic(context, email.text, password.text, name.text);
-            setClear();
-          }
-        }
-      },
+      onPressed: () {},
       style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
           backgroundColor: Colors.blue[900],

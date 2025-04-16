@@ -97,6 +97,7 @@ class _CreateProblemScreenState extends State<CreateProblemScreen> {
     setState(() => _isSubmitting = true);
     try {
       final problem = StackOverFlowProblemClass(
+          difficulty: 'Easy',
           problem_title: _titleController.text,
           problem_description: _descriptionController.text,
           tags: _selectedTags,
