@@ -17,8 +17,7 @@ List<Map<String, dynamic>> onlineContainers = [
   {'name': 'Description', 'icon': Icons.description, 'color': Colors.red},
   {'name': 'OnlineCode', 'icon': Icons.code, 'color': Colors.blue},
   {'name': 'Solutions', 'icon': Icons.lightbulb, 'color': Colors.yellow},
-  {'name': 'TestCases', 'icon': Icons.check_box, 'color': Colors.green},
-  {'name': 'Console', 'icon': Icons.check_box, 'color': Colors.indigo}
+  {'name': 'TestCases', 'icon': Icons.check_box, 'color': Colors.green}
 ];
 
 class DraggableResizableContainer extends StatefulWidget {

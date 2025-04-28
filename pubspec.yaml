@@ -67,7 +67,9 @@ flutter:
 
   assets:
   - assets/images/bg.png
+  - assets/images/t.png
   - assets/images/logo.png 
+  - assets/images/stflow.png 
   - assets/sounds/mp.mp3
   
 flutter_native_splash:

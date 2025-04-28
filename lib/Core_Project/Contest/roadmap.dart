@@ -462,7 +462,7 @@ class HierarchicalTreePainter extends CustomPainter {
 
 class GeminiService {
   static final model = GenerativeModel(
-    model: 'gemini-1.5-pro',
+    model: 'gemini-1.5-flash',
     apiKey: ApiKeys().geminiAPI,
   );
 
@@ -470,7 +470,7 @@ class GeminiService {
       String topic) async {
     try {
       final prompt = '''
-Generate 5 programming problems for the topic: $topic
+Generate 3-4 programming problems for the topic: $topic
 For each problem, provide:
 - A title
 - Difficulty level (Easy, Medium, or Hard)
@@ -604,7 +604,7 @@ class _ProblemsScreenState extends State<ProblemsScreen> {
                 margin: const EdgeInsets.only(bottom: 16),
                 child: ExpansionTile(
                   title: Text(
-                    problem['title'] ?? '',
+                    problem['title']?.toString() ?? '',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -612,7 +612,8 @@ class _ProblemsScreenState extends State<ProblemsScreen> {
                   ),
                   subtitle: Row(
                     children: [
-                      _buildDifficultyIndicator(problem['difficulty']),
+                      _buildDifficultyIndicator(
+                          problem['difficulty']?.toString()),
                       const SizedBox(width: 8),
                       Text(widget.topic),
                     ],
@@ -628,7 +629,7 @@ class _ProblemsScreenState extends State<ProblemsScreen> {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 8),
-                          Text(problem['description'] ?? ''),
+                          Text(problem['description']?.toString() ?? ''),
                           const SizedBox(height: 16),
                           Text(
                             'Example Input:',
@@ -641,7 +642,8 @@ class _ProblemsScreenState extends State<ProblemsScreen> {
                               color: Colors.grey[700],
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: Text(problem['exampleInput'] ?? ''),
+                            child: Text(
+                                _formatDynamicContent(problem['exampleInput'])),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -655,7 +657,8 @@ class _ProblemsScreenState extends State<ProblemsScreen> {
                               color: Colors.grey[700],
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: Text(problem['exampleOutput'] ?? ''),
+                            child: Text(_formatDynamicContent(
+                                problem['exampleOutput'])),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -663,7 +666,7 @@ class _ProblemsScreenState extends State<ProblemsScreen> {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 8),
-                          Text(problem['constraints'] ?? ''),
+                          Text(_formatDynamicContent(problem['constraints'])),
                           const SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -685,6 +688,18 @@ class _ProblemsScreenState extends State<ProblemsScreen> {
         },
       ),
     );
+  }
+
+  String _formatDynamicContent(dynamic content) {
+    if (content == null) {
+      return '';
+    } else if (content is String) {
+      return content;
+    } else if (content is List) {
+      return content.join('\n');
+    } else {
+      return content.toString();
+    }
   }
 
   Widget _buildDifficultyIndicator(String? difficulty) {

@@ -1,4 +1,5 @@
 // ignore_for_file: unused_field
+import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:competitivecodingarena/API_KEYS/api.dart';
@@ -41,7 +42,6 @@ const List<Map<String, dynamic>> _onlineContainersData = [
   {'name': 'OnlineCode', 'icon': Icons.code, 'color': Colors.blue},
   {'name': 'Solutions', 'icon': Icons.lightbulb, 'color': Colors.yellow},
   {'name': 'TestCases', 'icon': Icons.check_box, 'color': Colors.green},
-  {'name': 'Console', 'icon': Icons.check_box, 'color': Colors.indigo}
 ];
 
 class _BlackScreenState extends State<BlackScreen> {
@@ -70,11 +70,20 @@ class _BlackScreenState extends State<BlackScreen> {
   static const EdgeInsets _chatBubblePadding =
       EdgeInsets.symmetric(vertical: 8, horizontal: 12);
 
+  // Timer related fields
+  Timer? _timer;
+  int _remainingSeconds = 30 * 60;
+  bool _isPaused = false;
+  bool _isTimeUp = false;
+  static const int _warningThreshold = 5 * 60;
   @override
   void initState() {
     super.initState();
     _initializeFields();
-    if (widget.isOnline) _initAgora();
+    if (widget.isOnline) {
+      _initAgora();
+      _startCountdownTimer();
+    }
     _initializeChatsStream();
     _initializeAudioPlayer();
   }
@@ -86,6 +95,116 @@ class _BlackScreenState extends State<BlackScreen> {
     _authUser = FirebaseAuth.instance.currentUser?.displayName ?? 'Guest';
     _firestore = FirebaseFirestore.instance;
     _userNames[0] = "You";
+  }
+
+  // Timer methods
+  void _startCountdownTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!_isPaused) {
+        setState(() {
+          if (_remainingSeconds > 0) {
+            _remainingSeconds--;
+          } else {
+            _isTimeUp = true;
+            _timer?.cancel();
+            _showTimeUpDialog();
+          }
+        });
+      }
+    });
+  }
+
+  void _resetTimer() {
+    setState(() {
+      _remainingSeconds = 30 * 60; // Reset to 30 minutes
+      _isPaused = false;
+      _isTimeUp = false;
+
+      // Restart timer if it was canceled
+      if (_timer == null || !_timer!.isActive) {
+        _startCountdownTimer();
+      }
+    });
+  }
+
+  void _showTimeUpDialog() {
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Time Up!'),
+            content: const Text('Your 30-minute coding session has ended.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Continue Working'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Restart Timer'),
+                onPressed: () {
+                  _resetTimer();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  String _formatTime(int totalSeconds) {
+    final minutes = totalSeconds ~/ 60;
+    final seconds = totalSeconds % 60;
+
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  Color _getTimerColor() {
+    if (_isTimeUp) {
+      return Colors.red;
+    } else if (_remainingSeconds <= _warningThreshold) {
+      return Colors.orange;
+    } else {
+      return Colors.white;
+    }
+  }
+
+  Widget _buildTimerWidget() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey[850],
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.timer, color: _getTimerColor()),
+          const SizedBox(width: 8),
+          Text(
+            _formatTime(_remainingSeconds),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: _getTimerColor(),
+              fontFamily: 'Monospace',
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Future<void> _initializeAudioPlayer() async {
@@ -223,6 +342,7 @@ class _BlackScreenState extends State<BlackScreen> {
   void dispose() {
     _closeAgoraConnection();
     _disposeControllers();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -467,7 +587,10 @@ class _BlackScreenState extends State<BlackScreen> {
                             child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
-                                children: _buildContainerButtons()))))
+                                children: [
+                                  ...(_buildContainerButtons()),
+                                  if (widget.isOnline) _buildTimerWidget(),
+                                ]))))
               ])),
           if (showUserList) _buildUserList()
         ]),

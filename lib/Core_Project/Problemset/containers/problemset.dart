@@ -45,8 +45,6 @@ class _ProblemsetMenuState extends State<ProblemsetMenu>
       QuerySnapshot querySnapshot = await problemsCollection.get();
       List<Problem> fetchedProblems =
           querySnapshot.docs.map((doc) => Problem.fromFirestore(doc)).toList();
-
-      // Check if the widget is still mounted before calling setState
       if (mounted) {
         setState(() {
           problems = fetchedProblems;

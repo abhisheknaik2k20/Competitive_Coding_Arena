@@ -25,12 +25,11 @@ class Region {
   final List<String> subregions;
   final List<Institution> institutions;
 
-  Region({
-    required this.id,
-    required this.name,
-    this.subregions = const [],
-    this.institutions = const [],
-  });
+  Region(
+      {required this.id,
+      required this.name,
+      this.subregions = const [],
+      this.institutions = const []});
 }
 
 enum ViewMode { regions, institutions }
@@ -219,6 +218,7 @@ class _SearchScreenState extends State<SearchScreen>
         tags: ['Engineering', 'Technology', 'Education'],
       ),
     ];
+
     allInstitutions = institutions;
     List<Region> genregions = [
       Region(
@@ -381,45 +381,31 @@ class _SearchScreenState extends State<SearchScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Community Search',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              const Text('Community Search',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               Divider(),
               SizedBox(
-                height: 40,
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: _performSearch,
-                  decoration: InputDecoration(
-                    hintText: 'Search regions or institutions...',
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: Colors.blue,
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isAdvancedSearchVisible
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                      ),
-                      onPressed: _toggleAdvancedSearch,
-                      tooltip: 'Advanced Search Options',
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.blue, width: 2),
-                    ),
-                  ),
-                ),
-              ),
+                  height: 40,
+                  child: TextField(
+                      controller: _searchController,
+                      onChanged: _performSearch,
+                      decoration: InputDecoration(
+                          hintText: 'Search regions or institutions...',
+                          prefixIcon:
+                              const Icon(Icons.search, color: Colors.blue),
+                          suffixIcon: IconButton(
+                              icon: Icon(_isAdvancedSearchVisible
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down),
+                              onPressed: _toggleAdvancedSearch,
+                              tooltip: 'Advanced Search Options'),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                              borderRadius: BorderRadius.circular(12)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2))))),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 height: _isAdvancedSearchVisible ? 180 : 0,
@@ -429,25 +415,21 @@ class _SearchScreenState extends State<SearchScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Filter by:',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                        const Text('Filter by:',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Checkbox(
+                        Row(children: [
+                          Checkbox(
                               value: _filterOptions.filterByType,
                               onChanged: (value) {
                                 setState(() {
                                   _filterOptions.filterByType = value!;
                                   _applyFilters();
                                 });
-                              },
-                            ),
-                            const Text('Institution Type:'),
-                            const SizedBox(width: 8),
-                            DropdownButton<String>(
+                              }),
+                          const Text('Institution Type:'),
+                          const SizedBox(width: 8),
+                          DropdownButton<String>(
                               value: _filterOptions.selectedTypes.isEmpty
                                   ? null
                                   : _filterOptions.selectedTypes.first,
@@ -464,23 +446,15 @@ class _SearchScreenState extends State<SearchScreen>
                                   : null,
                               items: const [
                                 DropdownMenuItem(
-                                  value: 'University',
-                                  child: Text('University'),
-                                ),
+                                    value: 'University',
+                                    child: Text('University')),
                                 DropdownMenuItem(
-                                  value: 'Company',
-                                  child: Text('Company'),
-                                ),
+                                    value: 'Company', child: Text('Company')),
                                 DropdownMenuItem(
-                                  value: 'Organization',
-                                  child: Text('Organization'),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        // Tags filter
+                                    value: 'Organization',
+                                    child: Text('Organization'))
+                              ])
+                        ]),
                         const SizedBox(height: 8),
                         const Text('Popular Tags:'),
                         Wrap(
@@ -537,7 +511,6 @@ class _SearchScreenState extends State<SearchScreen>
                             ),
                           ],
                         ),
-
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton.icon(
@@ -601,11 +574,10 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  Widget _buildViewModeButton({
-    required String title,
-    required IconData icon,
-    required ViewMode viewMode,
-  }) {
+  Widget _buildViewModeButton(
+      {required String title,
+      required IconData icon,
+      required ViewMode viewMode}) {
     final isSelected = _currentViewMode == viewMode;
     return ElevatedButton(
       onPressed: () => _switchViewMode(viewMode),
@@ -644,7 +616,7 @@ class _SearchScreenState extends State<SearchScreen>
               return RegionTile(
                 region: region,
                 searchQuery: _searchQuery,
-                onInstitutionTap: _viewInstitutionDetails,
+                onInstitutionTap: viewInstitutionDetails,
               );
             },
           );
@@ -665,20 +637,20 @@ class _SearchScreenState extends State<SearchScreen>
                 return InstitutionTile(
                   institution: institution,
                   searchQuery: _searchQuery,
-                  onTap: () => _viewInstitutionDetails(institution),
+                  onTap: () => viewInstitutionDetails(institution),
                 );
               },
             ),
           );
   }
 
-  void _viewInstitutionDetails(Institution institution) {
+  void viewInstitutionDetails(Institution institution) {
     final faker = Faker();
     final random = Random();
-
-    final List<Map<String, dynamic>> users = List.generate(10, (index) {
+    // User data generation code remains the same
+    final List<Map<String, dynamic>> users = List.generate(5, (index) {
       return {
-        'id': 'ID${random.nextInt(9000) + 1000}', // Random 4-digit ID
+        'id': 'ID${random.nextInt(9000) + 1000}',
         'name': faker.person.name(),
         'rating': random.nextInt(3000),
         'problemsSolved': random.nextInt(500),
@@ -709,174 +681,330 @@ class _SearchScreenState extends State<SearchScreen>
       };
     });
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// **Header Section**
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      institution.name,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-
-              /// **Institution Type**
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  institution.type,
-                  style: TextStyle(color: Colors.blue.shade800),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              /// **Members Section**
-              const Text(
-                'Members',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    final user = users[index];
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: AssetImage(user['profileImage']),
-                        ),
-                        title: Text(user['name']),
-                        subtitle: Text(
-                            'Rating: ${user['rating']}  |  Solved: ${user['problemsSolved']}'),
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(16)),
-                            ),
-                            builder: (context) {
-                              return Container(
-                                padding: const EdgeInsets.all(16),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.7,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          user['name'],
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.close),
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                        'ID: ${user['id']} | Joined: ${user['joinDate']}'),
-                                    const SizedBox(height: 12),
-
-                                    /// **Top Skills**
-                                    const Text('Top Skills',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold)),
-                                    Wrap(
-                                      spacing: 8,
-                                      children: user['topSkills']
-                                          .map<Widget>((skill) =>
-                                              Chip(label: Text(skill)))
-                                          .toList(),
-                                    ),
-
-                                    /// **Recent Problems**
-                                    const SizedBox(height: 12),
-                                    const Text('Recent Problems',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold)),
-                                    Column(
-                                      children: (user['recentProblems'] as List)
-                                          .map<Widget>(
-                                            (problem) => ListTile(
-                                              title: Text(problem['name']),
-                                              subtitle: Text(
-                                                  '${problem['difficulty']} | Solved on: ${problem['date']}'),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-
-                                    const Spacer(),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12),
-                                      ),
-                                      onPressed: () {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Connecting with ${user['name']}...'),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text('Connect'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
+    List<Map<String, dynamic>> thadomalUsers = [
+      {
+        'id': 'ID${random.nextInt(9000) + 1000}',
+        'name': 'Pranav Mahamunkar',
+        'rating': '1200',
+        'problemsSolved': 6,
+        'profileImage': 'assets/avatars/shasdh.jpg',
+        'joinDate': '4th Feb 2025',
+        'topSkills': [
+          'Greedy Algorithms',
+          'Sorting',
+          'Dynamic Programming',
+          'Graphs',
+          'Bit Manipulation'
+        ]..shuffle(),
+        'recentProblems': List.generate(
+          3,
+          (i) => {
+            'name': [
+              'Two Sum',
+              'Valid Parentheses',
+              'Merge Two Sorted Lists',
+              'Best Time to Buy and Sell Stock',
+              'Maximum Subarray',
+              'Longest Palindromic Substring',
+              'Container With Most Water',
+              'Merge Intervals',
+              'LRU Cache',
+              'Word Break',
+              'Course Schedule',
+              'Trapping Rain Water',
+              'Median of Two Sorted Arrays',
+              'Regular Expression Matching',
+              'Serialize and Deserialize Binary Tree'
+            ][random.nextInt(15)],
+            'difficulty': ['Easy', 'Medium', 'Hard'][random.nextInt(3)],
+            'date': '2025-03-${random.nextInt(30) + 1}',
+          },
+        ),
+        'skillDistribution': {
+          'Greedy Algorithms': random.nextInt(100),
+          'Divide & Conquer': random.nextInt(100),
+          'Sorting': random.nextInt(100),
+          'Searching': random.nextInt(100),
+          'Dynamic Programming': random.nextInt(100),
+        },
       },
-    );
+      {
+        'id': 'ID${random.nextInt(9000) + 1000}',
+        'name': 'Ritojnan Mukherjee',
+        'rating': '1200',
+        'problemsSolved': 6,
+        'profileImage': 'assets/avatars/shasdh.jpg',
+        'joinDate': '6th Feb 2025',
+        'topSkills': [
+          'Greedy Algorithms',
+          'Sorting',
+          'Dynamic Programming',
+          'Graphs',
+          'Bit Manipulation'
+        ]..shuffle(),
+        'recentProblems': List.generate(
+          3,
+          (i) => {
+            'name': [
+              'Two Sum',
+              'Valid Parentheses',
+              'Merge Two Sorted Lists',
+              'Best Time to Buy and Sell Stock',
+              'Maximum Subarray',
+              'Longest Palindromic Substring',
+              'Container With Most Water',
+              'Merge Intervals',
+              'LRU Cache',
+              'Word Break',
+              'Course Schedule',
+              'Trapping Rain Water',
+              'Median of Two Sorted Arrays',
+              'Regular Expression Matching',
+              'Serialize and Deserialize Binary Tree'
+            ][random.nextInt(15)],
+            'difficulty': ['Easy', 'Medium', 'Hard'][random.nextInt(3)],
+            'date': '2025-03-${random.nextInt(30) + 1}',
+          },
+        ),
+        'skillDistribution': {
+          'Greedy Algorithms': random.nextInt(100),
+          'Divide & Conquer': random.nextInt(100),
+          'Sorting': random.nextInt(100),
+          'Searching': random.nextInt(100),
+          'Dynamic Programming': random.nextInt(100),
+        },
+      },
+      {
+        'id': 'ID${random.nextInt(9000) + 1000}',
+        'name': 'Devang Mane',
+        'rating': '800',
+        'problemsSolved': 4,
+        'profileImage': 'assets/avatars/shasdh.jpg',
+        'joinDate': '3rd Feb 2025',
+        'topSkills': [
+          'Greedy Algorithms',
+          'Sorting',
+          'Dynamic Programming',
+          'Graphs',
+          'Bit Manipulation'
+        ]..shuffle(),
+        'recentProblems': List.generate(
+          3,
+          (i) => {
+            'name': [
+              'Two Sum',
+              'Valid Parentheses',
+              'Merge Two Sorted Lists',
+              'Best Time to Buy and Sell Stock',
+              'Maximum Subarray',
+              'Longest Palindromic Substring',
+              'Container With Most Water',
+              'Merge Intervals',
+              'LRU Cache',
+              'Word Break',
+              'Course Schedule',
+              'Trapping Rain Water',
+              'Median of Two Sorted Arrays',
+              'Regular Expression Matching',
+              'Serialize and Deserialize Binary Tree'
+            ][random.nextInt(15)],
+            'difficulty': ['Easy', 'Medium', 'Hard'][random.nextInt(3)],
+            'date': '2025-03-${random.nextInt(30) + 1}',
+          },
+        ),
+        'skillDistribution': {
+          'Greedy Algorithms': random.nextInt(100),
+          'Divide & Conquer': random.nextInt(100),
+          'Sorting': random.nextInt(100),
+          'Searching': random.nextInt(100),
+          'Dynamic Programming': random.nextInt(100),
+        },
+      },
+    ];
+
+    bool isThadomal =
+        institution.name == 'Thadomal Shahani Engineering College';
+    showDialog(
+        context: context,
+        builder: (context) => Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              // FIXED: Set constraints to limit width and height
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 400,
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Text(institution.name,
+                                      style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold))),
+                              IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () => Navigator.pop(context))
+                            ]),
+                        const SizedBox(height: 8),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                                color: Colors.blue.shade100,
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text(institution.type,
+                                style: TextStyle(color: Colors.blue.shade800))),
+                        const SizedBox(height: 16),
+                        const Text('Members',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: isThadomal
+                                    ? thadomalUsers.length
+                                    : users.length,
+                                itemBuilder: (context, index) {
+                                  final user = isThadomal
+                                      ? thadomalUsers[index]
+                                      : users[index];
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: ListTile(
+                                        leading: CircleAvatar(
+                                            backgroundColor: Colors.blue,
+                                            child: Icon(
+                                              Icons.account_circle,
+                                              size: 40,
+                                            )),
+                                        title: Text(user['name']),
+                                        subtitle: Text(
+                                            'Rating: ${user['rating']}  |  Solved: ${user['problemsSolved']}'),
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.vertical(
+                                                              top: Radius
+                                                                  .circular(
+                                                                      16))),
+                                              builder: (context) {
+                                                return Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16),
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.7,
+                                                    child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                    user[
+                                                                        'name'],
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            20,
+                                                                        fontWeight:
+                                                                            FontWeight.bold)),
+                                                                IconButton(
+                                                                    icon: const Icon(
+                                                                        Icons
+                                                                            .close),
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            context))
+                                                              ]),
+                                                          const SizedBox(
+                                                              height: 8),
+                                                          Text(
+                                                              'ID: ${user['id']} | Joined: ${user['joinDate']}'),
+                                                          const SizedBox(
+                                                              height: 12),
+                                                          const Text(
+                                                              'Top Skills',
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          Wrap(
+                                                              spacing: 8,
+                                                              children: (user[
+                                                                          'topSkills']
+                                                                      as List)
+                                                                  .map<Widget>(
+                                                                      (skill) => Chip(
+                                                                          label:
+                                                                              Text(skill)))
+                                                                  .toList()),
+                                                          const SizedBox(
+                                                              height: 12),
+                                                          const Text(
+                                                              'Recent Problems',
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          Column(
+                                                              children: (user[
+                                                                          'recentProblems']
+                                                                      as List)
+                                                                  .map<Widget>((problem) => ListTile(
+                                                                      title: Text(
+                                                                          problem[
+                                                                              'name']),
+                                                                      subtitle:
+                                                                          Text(
+                                                                              '${problem['difficulty']} | Solved on: ${problem['date']}')))
+                                                                  .toList()),
+                                                          const Spacer(),
+                                                          ElevatedButton(
+                                                              style: ElevatedButton.styleFrom(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          12)),
+                                                              onPressed: () {
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(SnackBar(
+                                                                        content:
+                                                                            Text('Connecting with ${user['name']}...')));
+                                                              },
+                                                              child: const Text(
+                                                                  'Connect'))
+                                                        ]));
+                                              });
+                                        }),
+                                  );
+                                }))
+                      ]),
+                ),
+              ),
+            ));
   }
 }
 
@@ -885,15 +1013,13 @@ class FilterOptions {
   List<String> selectedTypes;
   List<String> selectedTags;
 
-  FilterOptions({
-    this.filterByType = false,
-    this.selectedTypes = const [],
-    this.selectedTags = const [],
-  });
+  FilterOptions(
+      {this.filterByType = false,
+      this.selectedTypes = const [],
+      this.selectedTags = const []});
 
-  bool isNotEmpty() {
-    return filterByType || selectedTypes.isNotEmpty || selectedTags.isNotEmpty;
-  }
+  bool isNotEmpty() =>
+      filterByType || selectedTypes.isNotEmpty || selectedTags.isNotEmpty;
 }
 
 class RegionTile extends StatelessWidget {
@@ -901,31 +1027,25 @@ class RegionTile extends StatelessWidget {
   final String searchQuery;
   final Function(Institution) onInstitutionTap;
 
-  const RegionTile({
-    super.key,
-    required this.region,
-    required this.searchQuery,
-    required this.onInstitutionTap,
-  });
+  const RegionTile(
+      {super.key,
+      required this.region,
+      required this.searchQuery,
+      required this.onInstitutionTap});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ExpansionTile(
-        title: Text(
-          region.name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
+        title: Text(region.name,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         subtitle: Text(
             '${region.institutions.length} institutions • ${region.subregions.length} subregions'),
         leading: const CircleAvatar(
-          child: Icon(Icons.public),
-        ),
+            backgroundColor: Colors.blue, child: Icon(Icons.public)),
         initiallyExpanded: searchQuery.isNotEmpty &&
             (region.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
                 region.subregions.any((subregion) => subregion
@@ -996,12 +1116,11 @@ class InstitutionTile extends StatelessWidget {
   final String searchQuery;
   final VoidCallback onTap;
 
-  const InstitutionTile({
-    super.key,
-    required this.institution,
-    required this.searchQuery,
-    required this.onTap,
-  });
+  const InstitutionTile(
+      {super.key,
+      required this.institution,
+      required this.searchQuery,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {

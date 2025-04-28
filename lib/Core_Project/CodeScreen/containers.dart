@@ -88,8 +88,24 @@ class _TexteditorState extends ConsumerState<Texteditor> {
   }
 
   setSolution(Map<String, dynamic> data, String solution) async {
+    // Convert executionTime from string to number (double or int)
+    if (data.containsKey('executionTime') && data['executionTime'] is String) {
+      // Parse the execution time, removing 'ms' and converting to a number
+      String timeStr = data['executionTime'].toString().replaceAll(' ms', '');
+      try {
+        // Try to parse as double first (since the time has decimal places)
+        double executionTimeDouble = double.parse(timeStr);
+        // Store as integer if you want to round it, or keep as double for precision
+        data['executionTime'] =
+            executionTimeDouble.round(); // or just use executionTimeDouble
+      } catch (e) {
+        print("Error parsing execution time: $e");
+      }
+    }
+
     data['solution'] = solution;
     data['name'] = _authname;
+
     _firebaseFirestore
         .collection("problems")
         .doc(widget.problem.id)
@@ -98,6 +114,7 @@ class _TexteditorState extends ConsumerState<Texteditor> {
         .get()
         .then((docSnapshot) {
       if (docSnapshot.exists) {
+        print(data);
         return docSnapshot.reference.update(data);
       } else {
         return docSnapshot.reference.set(data);

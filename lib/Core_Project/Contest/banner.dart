@@ -110,13 +110,9 @@ class _ScreenBannerAndFeatured extends State<ScreenBannerAndFeatured>
                           child: child,
                         ),
                         child: Hero(
-                          tag: 'trophy',
-                          child: Icon(
-                            Icons.emoji_events_outlined,
-                            size: widget.size.height * 0.25,
-                            color: Colors.amber.shade700,
-                          ),
-                        ),
+                            tag: 'trophy',
+                            child: Image.asset("assets/images/t.png",
+                                height: 190)),
                       ),
                     ),
                     const SizedBox(height: 20),

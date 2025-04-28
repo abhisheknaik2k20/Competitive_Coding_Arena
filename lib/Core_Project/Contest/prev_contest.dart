@@ -138,11 +138,10 @@ class ContestCard extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcpKizuouJPQa9RG-WfkaXejSVPrvvso57dA&s",
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                      ),
+                          "https://assets.leetcode.com/contest/weekly-contest-290/card_img_1654267980.png",
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover),
                     ),
                     Positioned(
                       right: 0,

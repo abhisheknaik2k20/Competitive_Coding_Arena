@@ -11,12 +11,11 @@ class MapLayerConfig {
   final IconData icon;
   final bool requiresApiKey;
 
-  MapLayerConfig({
-    required this.name,
-    required this.urlTemplate,
-    required this.icon,
-    this.requiresApiKey = false,
-  });
+  MapLayerConfig(
+      {required this.name,
+      required this.urlTemplate,
+      required this.icon,
+      this.requiresApiKey = false});
 }
 
 final Map<String, MapLayerConfig> mapLayers = {
@@ -166,56 +165,41 @@ class RadiusControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 300,
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Radius',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Text(
-                    '${radius.toStringAsFixed(0)}m',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              SliderTheme(
-                data: SliderThemeData(
-                  activeTrackColor: Colors.blue.withOpacity(0.7),
-                  thumbColor: Colors.blue,
-                  overlayColor: Theme.of(context).primaryColor.withOpacity(0.2),
-                ),
-                child: Slider(
-                  value: radius,
-                  min: minRadius,
-                  max: maxRadius,
-                  divisions: 49,
-                  label: '${radius.toStringAsFixed(0)}m',
-                  onChanged: onChanged,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        width: 300,
+        child: Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Radius',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 16),
+                        ),
+                        Text('${radius.toStringAsFixed(0)}m',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))
+                      ]),
+                  const SizedBox(height: 8),
+                  SliderTheme(
+                      data: SliderThemeData(
+                          activeTrackColor: Colors.blue.withOpacity(0.7),
+                          thumbColor: Colors.blue,
+                          overlayColor:
+                              Theme.of(context).primaryColor.withOpacity(0.2)),
+                      child: Slider(
+                          value: radius,
+                          min: minRadius,
+                          max: maxRadius,
+                          divisions: 49,
+                          label: '${radius.toStringAsFixed(0)}m',
+                          onChanged: onChanged))
+                ]))));
   }
 }

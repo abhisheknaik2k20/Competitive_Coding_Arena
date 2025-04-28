@@ -11,6 +11,8 @@ import 'package:competitivecodingarena/Core_Project/Problemset/containers/homesc
 import 'package:competitivecodingarena/Welcome/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Messaging/messages_logic.dart';
+
 final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeData>((ref) {
   return ThemeNotifier();
 });
@@ -57,7 +59,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
-  // await requestNotificationPermissions();
+  await requestNotificationPermissions();
   runApp(ErrorHandler(child: const ProviderScope(child: MyApp())));
 }
 
